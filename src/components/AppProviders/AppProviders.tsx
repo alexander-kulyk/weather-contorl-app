@@ -3,6 +3,7 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 //components
 import { ApiErrorAlert } from '../ApiErrorAlert';
+import { ErrorBoundary } from '../ErrorBoundary';
 //other
 import { ApiErrorProvider, FavoritesProvider, WeatherProvider } from '../../context';
 import { GlobalStyles, theme } from '../../theme';
@@ -13,7 +14,11 @@ export const AppProviders: React.FC<IAppProvidersProps> = ({ children }) => (
     <GlobalStyles />
     <ApiErrorProvider>
       <FavoritesProvider>
-        <WeatherProvider>{children}</WeatherProvider>
+        <WeatherProvider>
+          <ErrorBoundary component="APP" fallbackLayout="page">
+            {children}
+          </ErrorBoundary>
+        </WeatherProvider>
       </FavoritesProvider>
       <ApiErrorAlert />
     </ApiErrorProvider>
