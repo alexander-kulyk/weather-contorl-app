@@ -68,8 +68,6 @@ const requestTimelineWeather = async (
       throw error;
     }
 
-    console.log('handleApiError(error)', handleApiError(error));
-
     throw handleApiError(error);
   }
 };

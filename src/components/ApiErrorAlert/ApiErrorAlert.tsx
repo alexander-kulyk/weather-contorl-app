@@ -7,8 +7,12 @@ import { useApiErrorContext } from '../../context';
 import type { IApiErrorAlertProps, IApiErrorDetails } from './types';
 import * as S from './styled';
 
+const TOASTER_STYLE: React.CSSProperties & Record<'--width', string> = {
+  '--width': 'min(520px, calc(100vw - 32px))',
+};
+
 export const ApiErrorAlert: React.FC<IApiErrorAlertProps> = ({
-  position = 'top-right',
+  position = 'bottom-left',
 }) => {
   const { values, handlers } = useApiErrorContext();
   const toastIdRef = useRef<string | number | null>(null);
@@ -18,17 +22,19 @@ export const ApiErrorAlert: React.FC<IApiErrorAlertProps> = ({
       return null;
     }
 
-    const status = values.apiError.status
+    const statusLabel = values.apiError.status
       ? `Status ${values.apiError.status}`
       : 'No HTTP status';
-    const detailsText = values.apiError.details
-      ? ` · ${values.apiError.details}`
-      : '';
+    const metaLabel = values.apiError.details
+      ? `API_ERROR - ${values.apiError.details}`
+      : 'API_ERROR - VISUAL_CROSSING_TIMELINE';
 
     return {
       title: values.apiError.message,
-      description: `${status} · ${values.apiError.code}${detailsText}`,
-      error: values.apiError,
+      description: getApiErrorDescription(values.apiError.code),
+      statusLabel,
+      codeLabel: values.apiError.code,
+      metaLabel,
     };
   }, [values.apiError]);
 
@@ -55,24 +61,55 @@ export const ApiErrorAlert: React.FC<IApiErrorAlertProps> = ({
         <S.Alert role='alert' aria-live='assertive'>
           <S.Header>
             <S.Icon>
-              <AlertTriangle size={18} strokeWidth={1.8} aria-hidden='true' />
+              <AlertTriangle size={22} strokeWidth={1.7} aria-hidden='true' />
             </S.Icon>
             <S.Copy>
               <S.Title>{details.title}</S.Title>
+              <S.StatusRow>
+                <S.Status>{details.statusLabel}</S.Status>
+                <S.Separator>-</S.Separator>
+                <S.CodeBadge>{details.codeLabel}</S.CodeBadge>
+              </S.StatusRow>
               <S.Description>{details.description}</S.Description>
-              <S.Meta>{details.error.name}</S.Meta>
+              <S.Meta>{details.metaLabel}</S.Meta>
             </S.Copy>
           </S.Header>
-          <S.Action type='button' onClick={handleConfirm}>
-            Confirm
-          </S.Action>
+          <S.Footer>
+            <S.Action type='button' onClick={handleConfirm}>
+              Confirm
+            </S.Action>
+          </S.Footer>
         </S.Alert>
       ),
       {
         duration: Infinity,
+        unstyled: true,
       },
     );
   }, [details, handleConfirm]);
 
-  return <Toaster position={position} closeButton={false} />;
+  return (
+    <Toaster
+      position={position}
+      closeButton={false}
+      toastOptions={{ unstyled: true }}
+      style={TOASTER_STYLE}
+    />
+  );
+};
+
+const getApiErrorDescription = (code: string): string => {
+  if (code === 'NO_RESULTS') {
+    return 'The query returned no matching cities. The request was well-formed but no records exist.';
+  }
+
+  if (code === 'NETWORK') {
+    return 'The request could not reach the weather service. Check the connection and try again.';
+  }
+
+  if (code === 'API_LIMIT') {
+    return 'The weather service rejected the request or temporarily limited access.';
+  }
+
+  return 'The weather request failed before the dashboard could load fresh data.';
 };

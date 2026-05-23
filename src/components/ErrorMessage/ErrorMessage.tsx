@@ -7,7 +7,7 @@ import * as S from './styled';
 
 export const ErrorMessage: React.FC<IErrorMessageProps> = ({ message, onRetry }) => (
   <S.Wrapper role="alert">
-    <AlertTriangle size={20} strokeWidth={1.7} aria-hidden="true" />
+    <AlertTriangle size={24} strokeWidth={1.7} aria-hidden="true" />
     <S.Message>{message}</S.Message>
     {onRetry && (
       <S.RetryButton type="button" onClick={onRetry}>

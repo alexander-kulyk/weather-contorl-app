@@ -48,7 +48,12 @@ export const Field = styled.div<IFieldProps>`
     $hasError &&
     css`
       border-color: ${theme.colors.error};
-      box-shadow: 0 0 0 3px rgba(224, 58, 75, 0.14);
+      box-shadow: none;
+
+      &:focus-within {
+        border-color: ${theme.colors.error};
+        box-shadow: 0 0 0 3px rgba(224, 58, 75, 0.14);
+      }
     `}
 `;
 

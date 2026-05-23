@@ -1,11 +1,11 @@
-import type { IApiError } from '../../api';
-
 export interface IApiErrorAlertProps {
-  position?: 'top-right' | 'top-center' | 'bottom-right';
+  position?: 'top-right' | 'top-center' | 'bottom-right' | 'bottom-left';
 }
 
 export interface IApiErrorDetails {
   title: string;
   description: string;
-  error: IApiError;
+  statusLabel: string;
+  codeLabel: string;
+  metaLabel: string;
 }

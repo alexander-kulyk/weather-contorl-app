@@ -82,7 +82,7 @@ export const useWeatherSearch = ({
 
         if (appError.code === 'NO_RESULTS') {
           setResults([]);
-          setError(null);
+          setError(appError);
           setStatus('success');
           return;
         }

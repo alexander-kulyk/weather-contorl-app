@@ -1,6 +1,6 @@
 //core
 import React from 'react';
-import { Search } from 'lucide-react';
+import { AlertTriangle, Search } from 'lucide-react';
 //components
 import { EmptyState } from '../EmptyState';
 import { ErrorMessage } from '../ErrorMessage';
@@ -10,6 +10,8 @@ import { SearchResultRow } from '../SearchResultRow';
 import type { ISearchResultsListProps } from './types';
 import type { IWeatherResponse } from '../../types';
 import * as S from './styled';
+
+const SEARCH_RESULTS_ERROR_MESSAGE = 'Could not load weather data.';
 
 export const SearchResultsList: React.FC<ISearchResultsListProps> = ({
   results,
@@ -22,7 +24,8 @@ export const SearchResultsList: React.FC<ISearchResultsListProps> = ({
   onToggleFavorite,
 }) => {
   const hasResults = results.length > 0;
-  const hasNoResults = hasSearchStarted && status === 'success' && !hasResults;
+  const hasNoResults =
+    hasSearchStarted && status === 'success' && !hasResults;
   const showInitialEmpty = !hasSearchStarted && status !== 'loading';
   const resultCount = results.length;
 
@@ -31,7 +34,7 @@ export const SearchResultsList: React.FC<ISearchResultsListProps> = ({
       <S.Header>
         <S.Label id="search-results-title">
           <Search size={15} strokeWidth={1.7} aria-hidden="true" />
-          Results · {resultCount}
+          Results - {resultCount}
         </S.Label>
         {hasResults && <S.Hint>Click a row to view details</S.Hint>}
       </S.Header>
@@ -40,12 +43,16 @@ export const SearchResultsList: React.FC<ISearchResultsListProps> = ({
         <EmptyState title="Start by typing a city name to check the weather." />
       )}
       {status === 'loading' && <LoadingSkeleton rows={2} />}
-      {status === 'error' && error && <ErrorMessage message={error.message} />}
+      {status === 'error' && error && (
+        <ErrorMessage message={SEARCH_RESULTS_ERROR_MESSAGE} />
+      )}
       {hasNoResults && (
-        <EmptyState
-          title="No cities found. Check the spelling and try again."
-          icon={<Search size={22} strokeWidth={1.5} aria-hidden="true" />}
-        />
+        <S.ResultNotice role="status" $variant="error">
+          <AlertTriangle size={22} strokeWidth={1.7} aria-hidden="true" />
+          <S.ResultNoticeText>
+            No cities found. Check the spelling and try again.
+          </S.ResultNoticeText>
+        </S.ResultNotice>
       )}
       {hasResults && (
         <S.List role="list" aria-label="Weather search results">

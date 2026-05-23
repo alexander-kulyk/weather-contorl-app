@@ -16,10 +16,12 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
   onClear,
   disabled = false,
 }) => {
-  const hasError = status === 'error' && Boolean(error);
+  const hasError =
+    Boolean(error) && (status === 'error' || error?.code === 'NO_RESULTS');
+  const showErrorText = hasError && error?.code !== 'NO_RESULTS';
   const isLoading = status === 'loading';
   const hasValue = value.length > 0;
-  const describedBy = hasError ? SEARCH_ERROR_ID : undefined;
+  const describedBy = showErrorText ? SEARCH_ERROR_ID : undefined;
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -56,7 +58,7 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
           </S.ClearButton>
         )}
       </S.Field>
-      {hasError && <S.ErrorText id={SEARCH_ERROR_ID}>{error?.message}</S.ErrorText>}
+      {showErrorText && <S.ErrorText id={SEARCH_ERROR_ID}>{error?.message}</S.ErrorText>}
     </S.Wrapper>
   );
 };
