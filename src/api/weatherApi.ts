@@ -7,7 +7,10 @@ import {
   isRequestCanceled,
   processTimelineResponse,
 } from './utils';
-import type { IVisualCrossingTimelineResponse, IWeatherResponse } from '../types';
+import type {
+  IVisualCrossingTimelineResponse,
+  IWeatherResponse,
+} from '../types';
 import { API } from './constants';
 
 export const searchWeatherByCity = async (
@@ -64,6 +67,8 @@ const requestTimelineWeather = async (
     if (isRequestCanceled(error)) {
       throw error;
     }
+
+    console.log('handleApiError(error)', handleApiError(error));
 
     throw handleApiError(error);
   }

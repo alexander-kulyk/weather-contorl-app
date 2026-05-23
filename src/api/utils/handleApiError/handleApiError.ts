@@ -35,5 +35,8 @@ export const handleApiError = (error: unknown): IApiError => {
     }
   }
 
-  return createApiError('API', 'Could not load weather data. Please try again.');
+  return createApiError(
+    'API',
+    'Could not load weather data. Please try again.',
+  );
 };
