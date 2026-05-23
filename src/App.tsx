@@ -1,86 +1,62 @@
-import React, { useCallback } from 'react';
+//core
+import React from 'react';
+//components
 import {
-  AppHeader,
   FavoriteCitiesSection,
-  SearchInput,
   SearchResultsList,
   WeatherDetailsCard,
+  SearchInput,
+  AppHeader,
 } from './components';
-import { useFavoritesContext, useWeatherContext } from './context';
-import type { IFavoriteCity, IWeatherResponse } from './types';
+//other
+import { useAppWeatherDashboard } from './hooks';
 import * as S from './styled';
 
 export const App: React.FC = () => {
-  const weather = useWeatherContext();
-  const favorites = useFavoritesContext();
-  const selectedWeatherId = weather.values.selectedWeather?.id;
-  const selectedIsFavorite = selectedWeatherId
-    ? favorites.handlers.isFavorite(selectedWeatherId)
-    : false;
-
-  const handleFavoriteSelect = useCallback(
-    (favorite: IFavoriteCity): void => {
-      weather.handlers.selectCityByName(favorite.resolvedAddress);
-    },
-    [weather.handlers],
-  );
-
-  const handleWeatherSelect = useCallback(
-    (weatherResult: IWeatherResponse): void => {
-      weather.handlers.selectWeather(weatherResult);
-    },
-    [weather.handlers],
-  );
-
-  const handleWeatherFavoriteToggle = useCallback(
-    (weatherResult: IWeatherResponse): void => {
-      favorites.handlers.toggleWeatherFavorite(weatherResult);
-    },
-    [favorites.handlers],
-  );
+  const { values, handlers } = useAppWeatherDashboard();
 
   return (
     <S.Shell>
       <title>Aeris Weather Dashboard</title>
-      <AppHeader favoriteCount={favorites.values.favorites.length} />
+      <AppHeader favoriteCount={values.favorites.values.favorites.length} />
 
       <S.Workspace>
         <S.Sidebar>
           <SearchInput
-            value={weather.values.searchQuery}
-            status={weather.values.searchStatus}
-            error={weather.values.searchError}
-            onChange={weather.handlers.setSearchQuery}
-            onClear={weather.handlers.clearSearch}
+            value={values.weather.values.searchQuery}
+            status={values.weather.values.searchStatus}
+            error={values.weather.values.searchError}
+            onChange={values.weather.handlers.setSearchQuery}
+            onClear={values.weather.handlers.clearSearch}
           />
           <SearchResultsList
-            results={weather.values.searchResults}
-            status={weather.values.searchStatus}
-            error={weather.values.searchError}
-            hasSearchStarted={weather.values.hasSearchStarted}
-            selectedWeatherId={selectedWeatherId}
-            isFavorite={favorites.handlers.isFavorite}
-            onSelect={handleWeatherSelect}
-            onToggleFavorite={handleWeatherFavoriteToggle}
+            results={values.weather.values.searchResults}
+            status={values.weather.values.searchStatus}
+            error={values.weather.values.searchError}
+            hasSearchStarted={values.weather.values.hasSearchStarted}
+            selectedWeatherId={values.selectedWeatherId}
+            isFavorite={values.favorites.handlers.isFavorite}
+            onSelect={handlers.handleWeatherSelect}
+            onToggleFavorite={handlers.handleWeatherFavoriteToggle}
           />
           <FavoriteCitiesSection
-            favorites={favorites.values.favorites}
-            selectedWeatherId={selectedWeatherId}
-            onSelect={handleFavoriteSelect}
-            onRemove={favorites.handlers.removeFavorite}
+            favorites={values.favorites.values.favorites}
+            selectedWeatherId={values.selectedWeatherId}
+            onSelect={handlers.handleFavoriteSelect}
+            onRemove={values.favorites.handlers.removeFavorite}
           />
         </S.Sidebar>
 
         <S.Details>
           <WeatherDetailsCard
-            weather={weather.values.selectedWeather}
-            status={weather.values.detailStatus}
-            error={weather.values.detailError}
-            forecastRange={weather.values.forecastRange}
-            isFavorite={selectedIsFavorite}
-            onToggleFavorite={handleWeatherFavoriteToggle}
-            onForecastRangeChange={weather.handlers.setForecastRange}
-            onRetry={weather.handlers.retrySelected}
+            weather={values.weather.values.selectedWeather}
+            status={values.weather.values.detailStatus}
+            error={values.weather.values.detailError}
+            forecastRange={values.weather.values.forecastRange}
+            isFavorite={values.selectedIsFavorite}
+            onToggleFavorite={handlers.handleWeatherFavoriteToggle}
+            onForecastRangeChange={values.weather.handlers.setForecastRange}
+            onRetry={values.weather.handlers.retrySelected}
           />
         </S.Details>
       </S.Workspace>

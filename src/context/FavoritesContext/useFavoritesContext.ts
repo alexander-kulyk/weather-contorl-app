@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { FavoritesContext } from './context';
-import type { IFavoritesContextValue } from './types';
+import type { IFavoritesContext } from './types';
 
-export const useFavoritesContext = (): IFavoritesContextValue => {
+export const useFavoritesContext = (): IFavoritesContext => {
   const contextValue = useContext(FavoritesContext);
 
   if (!contextValue) {

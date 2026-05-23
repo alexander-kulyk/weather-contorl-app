@@ -1,15 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react';
+//core
+import { useCallback, useMemo, useState } from 'react';
+import type { FC } from 'react';
+//other
 import { useSelectedCityWeather, useWeatherSearch } from '../../hooks';
 import type { ForecastRange } from '../../types';
 import { WeatherContext } from './context';
-import type {
-  IWeatherContextHandlers,
-  IWeatherContextValue,
-  IWeatherContextValues,
-  IWeatherProviderProps,
-} from './types';
+import type { IWeatherProviderProps } from './types';
 
-export const WeatherProvider: React.FC<IWeatherProviderProps> = ({ children }) => {
+export const WeatherProvider: FC<IWeatherProviderProps> = ({ children }) => {
   const [searchQuery, setSearchQueryState] = useState<string>('');
   const [forecastRange, setForecastRange] = useState<ForecastRange>(7);
   const search = useWeatherSearch({ query: searchQuery });
@@ -24,32 +22,19 @@ export const WeatherProvider: React.FC<IWeatherProviderProps> = ({ children }) =
     search.handlers.clearResults();
   }, [search.handlers]);
 
-  const values = useMemo<IWeatherContextValues>(
-    () => ({
-      searchQuery,
-      searchResults: search.values.results,
-      searchStatus: search.values.status,
-      searchError: search.values.error,
-      hasSearchStarted: search.values.hasSearchStarted,
-      selectedWeather: selected.values.selectedWeather,
-      detailStatus: selected.values.status,
-      detailError: selected.values.error,
-      forecastRange,
-    }),
-    [
-      forecastRange,
-      search.values.error,
-      search.values.hasSearchStarted,
-      search.values.results,
-      search.values.status,
-      searchQuery,
-      selected.values.error,
-      selected.values.selectedWeather,
-      selected.values.status,
-    ],
-  );
+  const values = {
+    searchQuery,
+    searchResults: search.values.results,
+    searchStatus: search.values.status,
+    searchError: search.values.error,
+    hasSearchStarted: search.values.hasSearchStarted,
+    selectedWeather: selected.values.selectedWeather,
+    detailStatus: selected.values.status,
+    detailError: selected.values.error,
+    forecastRange,
+  };
 
-  const handlers = useMemo<IWeatherContextHandlers>(
+  const handlers = useMemo(
     () => ({
       setSearchQuery,
       clearSearch,
@@ -69,13 +54,9 @@ export const WeatherProvider: React.FC<IWeatherProviderProps> = ({ children }) =
     ],
   );
 
-  const contextValue = useMemo<IWeatherContextValue>(
-    () => ({
-      values,
-      handlers,
-    }),
-    [handlers, values],
+  return (
+    <WeatherContext.Provider value={{ values, handlers }}>
+      {children}
+    </WeatherContext.Provider>
   );
-
-  return <WeatherContext.Provider value={contextValue}>{children}</WeatherContext.Provider>;
 };

@@ -1,4 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+//core
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { FC } from 'react';
+//other
 import {
   createFavoriteCity,
   loadFavoriteCities,
@@ -7,15 +10,11 @@ import {
 } from '../../storage';
 import type { IFavoriteCity, IWeatherResponse } from '../../types';
 import { FavoritesContext } from './context';
-import type {
-  IFavoritesContextHandlers,
-  IFavoritesContextValue,
-  IFavoritesContextValues,
-  IFavoritesProviderProps,
-} from './types';
+import type { IFavoritesProviderProps } from './types';
 
-export const FavoritesProvider: React.FC<IFavoritesProviderProps> = ({ children }) => {
-  const [favorites, setFavorites] = useState<IFavoriteCity[]>(loadFavoriteCities);
+export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => {
+  const [favorites, setFavorites] =
+    useState<IFavoriteCity[]>(loadFavoriteCities);
 
   useEffect((): void => {
     saveFavoriteCities(favorites);
@@ -33,48 +32,47 @@ export const FavoritesProvider: React.FC<IFavoritesProviderProps> = ({ children 
 
   const removeFavorite = useCallback((cityId: string): void => {
     setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] =>
-      currentFavorites.filter((favorite: IFavoriteCity) => favorite.id !== cityId),
+      currentFavorites.filter(
+        (favorite: IFavoriteCity) => favorite.id !== cityId,
+      ),
     );
   }, []);
 
-  const toggleWeatherFavorite = useCallback((weather: IWeatherResponse): void => {
-    const favorite = createFavoriteCity(weather);
+  const toggleWeatherFavorite = useCallback(
+    (weather: IWeatherResponse): void => {
+      const favorite = createFavoriteCity(weather);
 
-    setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] => {
-      const exists = currentFavorites.some((item: IFavoriteCity) => item.id === favorite.id);
+      setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] => {
+        const exists = currentFavorites.some(
+          (item: IFavoriteCity) => item.id === favorite.id,
+        );
 
-      if (exists) {
-        return currentFavorites.filter((item: IFavoriteCity) => item.id !== favorite.id);
-      }
+        if (exists) {
+          return currentFavorites.filter(
+            (item: IFavoriteCity) => item.id !== favorite.id,
+          );
+        }
 
-      return upsertFavoriteCity(currentFavorites, favorite);
-    });
-  }, []);
-
-  const values = useMemo<IFavoritesContextValues>(
-    () => ({
-      favorites,
-      favoriteIds,
-    }),
-    [favoriteIds, favorites],
+        return upsertFavoriteCity(currentFavorites, favorite);
+      });
+    },
+    [],
   );
 
-  const handlers = useMemo<IFavoritesContextHandlers>(
-    () => ({
-      isFavorite,
-      toggleWeatherFavorite,
-      removeFavorite,
-    }),
-    [isFavorite, removeFavorite, toggleWeatherFavorite],
-  );
+  const values = {
+    favorites,
+    favoriteIds,
+  };
 
-  const contextValue = useMemo<IFavoritesContextValue>(
-    () => ({
-      values,
-      handlers,
-    }),
-    [handlers, values],
-  );
+  const handlers = {
+    isFavorite,
+    toggleWeatherFavorite,
+    removeFavorite,
+  };
 
-  return <FavoritesContext.Provider value={contextValue}>{children}</FavoritesContext.Provider>;
+  return (
+    <FavoritesContext.Provider value={{ values, handlers }}>
+      {children}
+    </FavoritesContext.Provider>
+  );
 };

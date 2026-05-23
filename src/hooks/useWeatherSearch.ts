@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { isWeatherRequestCanceled, searchWeatherByCity, WeatherApiError } from '../services';
+import { isApiError, isRequestCanceled, searchWeatherByCity } from '../api';
 import type { AsyncStatus, IAppError, IWeatherResponse } from '../types';
 import { useDebounce } from './useDebounce';
 
@@ -67,7 +67,7 @@ export const useWeatherSearch = ({
         setStatus('success');
       })
       .catch((requestError: unknown): void => {
-        if (isWeatherRequestCanceled(requestError)) {
+        if (isRequestCanceled(requestError)) {
           return;
         }
 
@@ -112,7 +112,7 @@ export const useWeatherSearch = ({
 };
 
 const toAppError = (error: unknown): IAppError => {
-  if (error instanceof WeatherApiError) {
+  if (isApiError(error)) {
     return {
       code: error.code,
       message: error.message,

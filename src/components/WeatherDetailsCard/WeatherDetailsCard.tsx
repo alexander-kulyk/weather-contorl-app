@@ -12,19 +12,10 @@ import { LoadingSkeleton } from '../LoadingSkeleton';
 import { SunriseSunsetCard } from '../SunriseSunsetCard';
 import { WeatherMetricCard } from '../WeatherMetricCard';
 //other
-import {
-  formatHumidity,
-  formatPressure,
-  formatTemperature,
-  formatVisibility,
-  formatWindDirection,
-  formatWindSpeed,
-  getMetricIcon,
-  getUvDescription,
-  getWeatherIcon,
-} from '../../utils';
+import { formatTemperature, getMetricIcon, getWeatherIcon } from '../../utils';
+import { buildViewModel } from './utils';
 import type { IWeatherDetailsCardProps, IWeatherDetailsViewModel } from './types';
-import type { ForecastRange, IWeatherMetric, IWeatherResponse } from '../../types';
+import type { ForecastRange, IWeatherMetric } from '../../types';
 import * as S from './styled';
 
 export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
@@ -130,40 +121,3 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
     </S.Card>
   );
 };
-
-const buildViewModel = (weather: IWeatherResponse): IWeatherDetailsViewModel => ({
-  metrics: [
-    {
-      id: 'wind',
-      label: 'Wind',
-      value: formatWindSpeed(weather.current.windSpeed),
-      helper: formatWindDirection(weather.current.windDirection),
-    },
-    {
-      id: 'humidity',
-      label: 'Humidity',
-      value: formatHumidity(weather.current.humidity),
-    },
-    {
-      id: 'pressure',
-      label: 'Pressure',
-      value: formatPressure(weather.current.pressure),
-    },
-    {
-      id: 'visibility',
-      label: 'Visibility',
-      value: formatVisibility(weather.current.visibility),
-    },
-    {
-      id: 'uvIndex',
-      label: 'UV index',
-      value: String(Math.round(weather.current.uvIndex)),
-      helper: getUvDescription(weather.current.uvIndex),
-    },
-    {
-      id: 'feelsLike',
-      label: 'Feels like',
-      value: formatTemperature(weather.current.feelsLike),
-    },
-  ],
-});

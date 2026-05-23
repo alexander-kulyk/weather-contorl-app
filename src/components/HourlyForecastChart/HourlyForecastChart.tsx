@@ -14,7 +14,7 @@ import {
 import { EmptyState } from '../EmptyState';
 //other
 import { formatTemperature } from '../../utils';
-import { getVisibleHours, mapHoursToChartPoints } from './utils';
+import { getChartSummary, getVisibleHours, mapHoursToChartPoints } from './utils';
 import type { IHourlyChartPoint, IHourlyForecastChartProps } from './types';
 import * as S from './styled';
 
@@ -126,22 +126,4 @@ export const HourlyForecastChart: React.FC<IHourlyForecastChartProps> = ({
       </table>
     </S.Section>
   );
-};
-
-const getChartSummary = (points: IHourlyChartPoint[]): string => {
-  const temperatures = points.map(
-    (point: IHourlyChartPoint) => point.temperature,
-  );
-  const minTemperature = Math.min(...temperatures);
-  const maxTemperature = Math.max(...temperatures);
-  const firstPoint = points[0];
-  const lastPoint = points.at(-1);
-
-  if (!firstPoint || !lastPoint) {
-    return 'Hourly temperature data is unavailable.';
-  }
-
-  return `Temperature ranges from ${formatTemperature(minTemperature)} to ${formatTemperature(
-    maxTemperature,
-  )}, from ${firstPoint.time} through ${lastPoint.time}.`;
 };

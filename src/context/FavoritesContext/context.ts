@@ -1,4 +1,4 @@
 import { createContext } from 'react';
-import type { IFavoritesContextValue } from './types';
+import type { IFavoritesContext } from './types';
 
-export const FavoritesContext = createContext<IFavoritesContextValue | null>(null);
+export const FavoritesContext = createContext<IFavoritesContext | null>(null);
