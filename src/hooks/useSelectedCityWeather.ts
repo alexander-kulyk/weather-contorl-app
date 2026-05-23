@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getWeatherByCity, isApiError, isRequestCanceled } from '../api';
+import type { IApiError } from '../api';
 import type { AsyncStatus, IAppError, IWeatherResponse } from '../types';
+
+interface IUseSelectedCityWeatherParams {
+  onApiError?: (error: IApiError) => void;
+}
 
 interface IUseSelectedCityWeatherValues {
   selectedWeather: IWeatherResponse | null;
@@ -20,7 +25,9 @@ interface IUseSelectedCityWeatherReturn {
   handlers: IUseSelectedCityWeatherHandlers;
 }
 
-export const useSelectedCityWeather = (): IUseSelectedCityWeatherReturn => {
+export const useSelectedCityWeather = ({
+  onApiError,
+}: IUseSelectedCityWeatherParams = {}): IUseSelectedCityWeatherReturn => {
   const [requestedCity, setRequestedCity] = useState<string | null>(null);
   const [lastRequestedCity, setLastRequestedCity] = useState<string | null>(null);
   const [selectedWeather, setSelectedWeather] = useState<IWeatherResponse | null>(null);
@@ -78,6 +85,10 @@ export const useSelectedCityWeather = (): IUseSelectedCityWeatherReturn => {
           return;
         }
 
+        if (isApiError(requestError)) {
+          onApiError?.(requestError);
+        }
+
         setSelectedWeather(null);
         setStatus('error');
         setError(toAppError(requestError));
@@ -86,7 +97,7 @@ export const useSelectedCityWeather = (): IUseSelectedCityWeatherReturn => {
     return (): void => {
       abortController.abort();
     };
-  }, [requestedCity]);
+  }, [onApiError, requestedCity]);
 
   const values = useMemo<IUseSelectedCityWeatherValues>(
     () => ({

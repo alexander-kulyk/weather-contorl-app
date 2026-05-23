@@ -5,7 +5,11 @@ export const isApiError = (error: unknown): error is IApiError => {
     return false;
   }
 
-  const candidate = error as Error & { code?: unknown };
+  const candidate = error as Error & { code?: unknown; status?: unknown };
 
-  return error.name === 'ApiError' && typeof candidate.code === 'string';
+  return (
+    error.name === 'ApiError' &&
+    typeof candidate.code === 'string' &&
+    (candidate.status === undefined || typeof candidate.status === 'number')
+  );
 };

@@ -12,11 +12,13 @@ export const handleApiError = (error: unknown): IApiError => {
 
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;
+    const details = error.response?.statusText;
 
     if (status === 400 || status === 404) {
       return createApiError(
         'NO_RESULTS',
         'No cities found. Check the spelling and try again.',
+        { status, details },
       );
     }
 
@@ -24,6 +26,7 @@ export const handleApiError = (error: unknown): IApiError => {
       return createApiError(
         'API_LIMIT',
         'Weather data is temporarily unavailable. Please try again later.',
+        { status, details },
       );
     }
 

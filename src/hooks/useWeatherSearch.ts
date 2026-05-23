@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { isApiError, isRequestCanceled, searchWeatherByCity } from '../api';
+import type { IApiError } from '../api';
 import type { AsyncStatus, IAppError, IWeatherResponse } from '../types';
 import { useDebounce } from './useDebounce';
 
@@ -7,6 +8,7 @@ interface IUseWeatherSearchParams {
   query: string;
   delayMs?: number;
   minLength?: number;
+  onApiError?: (error: IApiError) => void;
 }
 
 interface IUseWeatherSearchValues {
@@ -30,6 +32,7 @@ export const useWeatherSearch = ({
   query,
   delayMs = 400,
   minLength = 2,
+  onApiError,
 }: IUseWeatherSearchParams): IUseWeatherSearchReturn => {
   const normalizedQuery = query.trim();
   const debouncedQuery = useDebounce<string>(normalizedQuery, delayMs);
@@ -71,6 +74,10 @@ export const useWeatherSearch = ({
           return;
         }
 
+        if (isApiError(requestError)) {
+          onApiError?.(requestError);
+        }
+
         const appError = toAppError(requestError);
 
         if (appError.code === 'NO_RESULTS') {
@@ -88,7 +95,7 @@ export const useWeatherSearch = ({
     return (): void => {
       abortController.abort();
     };
-  }, [debouncedQuery, minLength]);
+  }, [debouncedQuery, minLength, onApiError]);
 
   const values = useMemo<IUseWeatherSearchValues>(
     () => ({

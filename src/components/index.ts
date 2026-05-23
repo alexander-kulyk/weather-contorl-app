@@ -1,3 +1,4 @@
+export * from './ApiErrorAlert';
 export * from './AppHeader';
 export * from './AppProviders';
 export * from './EmptyState';

@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import type { FC } from 'react';
 //other
 import { useSelectedCityWeather, useWeatherSearch } from '../../hooks';
+import { useApiErrorContext } from '../ApiErrorContext';
 import type { ForecastRange } from '../../types';
 import { WeatherContext } from './context';
 import type { IWeatherProviderProps } from './types';
@@ -10,8 +11,16 @@ import type { IWeatherProviderProps } from './types';
 export const WeatherProvider: FC<IWeatherProviderProps> = ({ children }) => {
   const [searchQuery, setSearchQueryState] = useState<string>('');
   const [forecastRange, setForecastRange] = useState<ForecastRange>(7);
-  const search = useWeatherSearch({ query: searchQuery });
-  const selected = useSelectedCityWeather();
+  const {
+    handlers: { reportApiError },
+  } = useApiErrorContext();
+  const search = useWeatherSearch({
+    query: searchQuery,
+    onApiError: reportApiError,
+  });
+  const selected = useSelectedCityWeather({
+    onApiError: reportApiError,
+  });
 
   const setSearchQuery = useCallback((query: string): void => {
     setSearchQueryState(query);

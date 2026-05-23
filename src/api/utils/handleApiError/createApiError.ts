@@ -1,11 +1,13 @@
 import type { WeatherErrorCode } from '../../../types';
-import type { IApiError } from '../../types';
+import type { IApiError, IApiErrorMeta } from '../../types';
 
 export const createApiError = (
   code: WeatherErrorCode,
   message: string,
+  meta: IApiErrorMeta = {},
 ): IApiError =>
   Object.assign(new Error(message), {
     name: 'ApiError',
     code,
+    ...meta,
   });
