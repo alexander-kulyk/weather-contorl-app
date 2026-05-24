@@ -23,7 +23,7 @@ export const searchWeatherByCity = async (
   return [weather];
 };
 
-export const getWeatherByCity = async (
+export const fetchWeatherByCity = async (
   city: string,
   signal?: AbortSignal,
 ): Promise<IWeatherResponse> => fetchTimelineWeather(city, signal);

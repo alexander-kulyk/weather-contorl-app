@@ -1,5 +1,5 @@
-import { isApiError } from '../../../api';
-import type { IAppError } from '../../../types';
+import { isApiError } from '../api/utils';
+import type { IAppError } from '../types';
 
 export const toAppError = (error: unknown): IAppError => {
   if (isApiError(error)) {

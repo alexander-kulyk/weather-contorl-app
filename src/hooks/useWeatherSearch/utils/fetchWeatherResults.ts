@@ -4,9 +4,9 @@ import {
   searchWeatherByCity,
 } from '../../../api';
 import type { IWeatherResponse } from '../../../types';
+import { toAppError } from '../../../utils';
 import type { IFetchWeatherResultsParams } from '../types';
 import { shouldReportApiError } from './shouldReportApiError';
-import { toAppError } from './toAppError';
 
 export const fetchWeatherResults = async ({
   onApiError,

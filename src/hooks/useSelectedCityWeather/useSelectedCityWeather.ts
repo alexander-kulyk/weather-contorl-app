@@ -1,36 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getWeatherByCity, isApiError, isRequestCanceled } from '../api';
-import type { IApiError } from '../api';
-import type { AsyncStatus, IAppError, IWeatherResponse } from '../types';
-
-interface IUseSelectedCityWeatherParams {
-  onApiError?: (error: IApiError) => void;
-}
-
-interface IUseSelectedCityWeatherValues {
-  selectedWeather: IWeatherResponse | null;
-  status: AsyncStatus;
-  error: IAppError | null;
-}
-
-interface IUseSelectedCityWeatherHandlers {
-  selectWeather: (weather: IWeatherResponse) => void;
-  selectCityByName: (city: string) => void;
-  clearSelected: () => void;
-  retrySelected: () => void;
-}
-
-interface IUseSelectedCityWeatherReturn {
-  values: IUseSelectedCityWeatherValues;
-  handlers: IUseSelectedCityWeatherHandlers;
-}
+import type { AsyncStatus, IAppError, IWeatherResponse } from '../../types';
+import type {
+  IUseSelectedCityWeatherHandlers,
+  IUseSelectedCityWeatherParams,
+  IUseSelectedCityWeatherReturn,
+  IUseSelectedCityWeatherValues,
+} from './types';
+import { fetchSelectedCityWeather } from './utils';
 
 export const useSelectedCityWeather = ({
   onApiError,
 }: IUseSelectedCityWeatherParams = {}): IUseSelectedCityWeatherReturn => {
   const [requestedCity, setRequestedCity] = useState<string | null>(null);
   const [lastRequestedCity, setLastRequestedCity] = useState<string | null>(null);
-  const [selectedWeather, setSelectedWeather] = useState<IWeatherResponse | null>(null);
+  const [selectedWeather, setSelectedWeather] =
+    useState<IWeatherResponse | null>(null);
   const [status, setStatus] = useState<AsyncStatus>('idle');
   const [error, setError] = useState<IAppError | null>(null);
 
@@ -74,25 +58,14 @@ export const useSelectedCityWeather = ({
 
     const abortController = new AbortController();
 
-    getWeatherByCity(requestedCity, abortController.signal)
-      .then((weather: IWeatherResponse): void => {
-        setSelectedWeather(weather);
-        setStatus('success');
-        setError(null);
-      })
-      .catch((requestError: unknown): void => {
-        if (isRequestCanceled(requestError)) {
-          return;
-        }
-
-        if (isApiError(requestError)) {
-          onApiError?.(requestError);
-        }
-
-        setSelectedWeather(null);
-        setStatus('error');
-        setError(toAppError(requestError));
-      });
+    void fetchSelectedCityWeather({
+      city: requestedCity,
+      onApiError,
+      setError,
+      setSelectedWeather,
+      setStatus,
+      signal: abortController.signal,
+    });
 
     return (): void => {
       abortController.abort();
@@ -119,18 +92,4 @@ export const useSelectedCityWeather = ({
   );
 
   return { values, handlers };
-};
-
-const toAppError = (error: unknown): IAppError => {
-  if (isApiError(error)) {
-    return {
-      code: error.code,
-      message: error.message,
-    };
-  }
-
-  return {
-    code: 'UNKNOWN',
-    message: 'Could not load weather data. Please try again.',
-  };
 };
