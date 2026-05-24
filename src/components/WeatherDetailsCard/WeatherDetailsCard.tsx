@@ -4,7 +4,7 @@ import { MapPin } from 'lucide-react';
 //components
 import { EmptyState } from '../EmptyState';
 import { ErrorMessage } from '../ErrorMessage';
-import { FavoriteButton } from '../Favorites/FavoriteButton';
+import { FavoriteButton } from '../Favorites';
 import { ForecastList } from '../ForecastList';
 import { ForecastSwitcher } from '../ForecastSwitcher';
 import { HourlyForecastChart } from '../HourlyForecastChart';
@@ -14,7 +14,10 @@ import { WeatherMetricCard } from '../WeatherMetricCard';
 //other
 import { formatTemperature, getMetricIcon, getWeatherIcon } from '../../utils';
 import { buildViewModel, getForecastDays, getSelectedDay } from './utils';
-import type { IWeatherDetailsCardProps, IWeatherDetailsViewModel } from './types';
+import type {
+  IWeatherDetailsCardProps,
+  IWeatherDetailsViewModel,
+} from './types';
 import type { ForecastRange, IWeatherMetric } from '../../types';
 import * as S from './styled';
 
@@ -52,7 +55,7 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
   );
 
   if (status === 'loading') {
-    return <LoadingSkeleton variant="details" />;
+    return <LoadingSkeleton variant='details' />;
   }
 
   if (status === 'error' && error) {
@@ -60,7 +63,9 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
   }
 
   if (!weather || !viewModel) {
-    return <EmptyState title="Select a city from the list to view detailed weather." />;
+    return (
+      <EmptyState title='Select a city from the list to view detailed weather.' />
+    );
   }
 
   return (
@@ -69,12 +74,16 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
         <S.CityBlock>
           <S.Location>
             <S.CityName>
-              <MapPin size={22} strokeWidth={1.7} aria-hidden="true" />
+              <MapPin size={22} strokeWidth={1.7} aria-hidden='true' />
               {weather.city}
             </S.CityName>
-            <S.Address $themeKey={weather.themeKey}>{weather.resolvedAddress}</S.Address>
+            <S.Address $themeKey={weather.themeKey}>
+              {weather.resolvedAddress}
+            </S.Address>
           </S.Location>
-          <S.Temperature>{formatTemperature(weather.current.temperature)}</S.Temperature>
+          <S.Temperature>
+            {formatTemperature(weather.current.temperature)}
+          </S.Temperature>
         </S.CityBlock>
 
         <S.ConditionBlock>
@@ -82,9 +91,11 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
             cityName={weather.city}
             isFavorite={isFavorite}
             onToggle={handleFavoriteToggle}
-            variant="soft"
+            variant='soft'
           />
-          <S.ConditionIcon>{getWeatherIcon(weather.current.conditions, 58)}</S.ConditionIcon>
+          <S.ConditionIcon>
+            {getWeatherIcon(weather.current.conditions, 58)}
+          </S.ConditionIcon>
           <div>
             <S.ConditionText>{weather.current.conditions}</S.ConditionText>
             <S.SoftText $themeKey={weather.themeKey}>
@@ -107,17 +118,25 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
         ))}
       </S.MetricsGrid>
 
-      <HourlyForecastChart hours={selectedDay?.hours ?? []} themeKey={weather.themeKey} />
+      <HourlyForecastChart
+        hours={selectedDay?.hours ?? []}
+        themeKey={weather.themeKey}
+      />
 
-      <section aria-labelledby="forecast-title">
+      <section aria-labelledby='forecast-title'>
         <S.SectionHeader>
-          <S.SectionTitle id="forecast-title">Forecast</S.SectionTitle>
-          <ForecastSwitcher value={forecastRange} onChange={handleForecastRangeChange} />
+          <S.SectionTitle id='forecast-title'>Forecast</S.SectionTitle>
+          <ForecastSwitcher
+            value={forecastRange}
+            onChange={handleForecastRangeChange}
+          />
         </S.SectionHeader>
         <ForecastList days={forecastDays} themeKey={weather.themeKey} />
       </section>
 
-      {selectedDay && <SunriseSunsetCard day={selectedDay} themeKey={weather.themeKey} />}
+      {selectedDay && (
+        <SunriseSunsetCard day={selectedDay} themeKey={weather.themeKey} />
+      )}
     </S.Card>
   );
 };
