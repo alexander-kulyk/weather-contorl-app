@@ -6,6 +6,7 @@ interface ICardProps {
 }
 
 export const Card = styled.article<ICardProps>`
+  min-width: 0;
   display: grid;
   gap: ${({ theme }) => theme.spacing[8]};
   padding: ${({ theme }) => theme.spacing[8]};
@@ -21,9 +22,14 @@ export const Card = styled.article<ICardProps>`
 `;
 
 export const Hero = styled.div`
+  min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: ${({ theme }) => theme.spacing[6]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
@@ -31,6 +37,7 @@ export const Hero = styled.div`
 `;
 
 export const CityBlock = styled.div`
+  min-width: 0;
   display: grid;
   gap: ${({ theme }) => theme.spacing[4]};
 `;
@@ -41,12 +48,14 @@ export const Location = styled.div`
 `;
 
 export const CityName = styled.h2`
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[2]};
   font-size: 2.25rem;
   font-weight: 800;
   line-height: 1.1;
+  overflow-wrap: anywhere;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     font-size: 2rem;
@@ -54,7 +63,9 @@ export const CityName = styled.h2`
 `;
 
 export const Address = styled.p<ICardProps>`
+  min-width: 0;
   color: ${({ theme, $themeKey }) => theme.weatherThemes[$themeKey].inkSoft};
+  overflow-wrap: anywhere;
 `;
 
 export const Temperature = styled.p`
@@ -68,13 +79,14 @@ export const Temperature = styled.p`
 `;
 
 export const ConditionBlock = styled.div`
+  min-width: 0;
   display: grid;
   align-content: start;
   justify-items: end;
   gap: ${({ theme }) => theme.spacing[4]};
   text-align: right;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     justify-items: start;
     text-align: left;
   }
@@ -85,9 +97,11 @@ export const ConditionIcon = styled.div`
 `;
 
 export const ConditionText = styled.p`
+  min-width: 0;
   font-size: 1.625rem;
   font-weight: 700;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 `;
 
 export const SoftText = styled.p<ICardProps>`

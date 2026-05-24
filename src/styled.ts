@@ -25,7 +25,7 @@ export const Workspace = styled.main`
     grid-template-columns: minmax(280px, 390px) minmax(0, 1fr);
   }
 
-  @media (max-width: 980px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
   }
 `;
