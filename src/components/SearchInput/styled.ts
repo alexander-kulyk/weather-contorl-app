@@ -16,9 +16,13 @@ export const Wrapper = styled.div`
 `;
 
 export const Label = styled.label`
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.typography.micro.fontSize};
-  font-weight: ${({ theme }) => theme.typography.micro.fontWeight};
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+  width: fit-content;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: ${({ theme }) => theme.typography.small.fontSize};
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 `;

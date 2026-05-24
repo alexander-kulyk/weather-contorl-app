@@ -57,8 +57,9 @@ export const FavoriteCitiesSection: React.FC<IFavoriteCitiesSectionProps> = ({
 
       {!hasFavorites && (
         <EmptyState
-          title='No favorite cities yet.'
-          description='Add a city from search results or details to keep it here.'
+          title='No favorites yet'
+          description='Tap the heart on any city to pin it here for quick access.'
+          icon={<Heart size={32} strokeWidth={1.7} aria-hidden='true' />}
         />
       )}
 

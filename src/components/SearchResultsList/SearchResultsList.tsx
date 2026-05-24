@@ -42,7 +42,10 @@ export const SearchResultsList: React.FC<ISearchResultsListProps> = ({
       </S.Header>
 
       {showInitialEmpty && (
-        <EmptyState title='Start by typing a city name to check the weather.' />
+        <EmptyState
+          title='Find your weather'
+          description='Start by typing a city name to check the weather.'
+        />
       )}
       {status === 'loading' && <LoadingSkeleton rows={2} />}
       {status === 'error' && error && (

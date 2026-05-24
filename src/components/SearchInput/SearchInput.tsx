@@ -30,7 +30,10 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
 
   return (
     <S.Wrapper>
-      <S.Label htmlFor={SEARCH_INPUT_ID}>Search</S.Label>
+      <S.Label htmlFor={SEARCH_INPUT_ID}>
+        <Search size={17} strokeWidth={1.8} aria-hidden='true' />
+        Search
+      </S.Label>
       <S.Field $hasError={hasError}>
         <S.IconSlot $isLoading={isLoading}>
           {isLoading ? (

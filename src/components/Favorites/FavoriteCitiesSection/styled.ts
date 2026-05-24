@@ -11,7 +11,7 @@ export const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[2]};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textMuted};
 `;
 
 export const HeaderLead = styled.div`
@@ -29,16 +29,17 @@ export const Title = styled.h2`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[2]};
-  font-size: ${({ theme }) => theme.typography.micro.fontSize};
-  font-weight: ${({ theme }) => theme.typography.micro.fontWeight};
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: ${({ theme }) => theme.typography.small.fontSize};
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0;
 `;
 
 export const Count = styled.span`
-  min-width: 24px;
-  height: 24px;
+  min-width: ${({ theme }) => theme.buttonSizes.iconSm};
+  height: ${({ theme }) => theme.buttonSizes.iconSm};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -46,8 +47,8 @@ export const Count = styled.span`
   border-radius: ${({ theme }) => theme.radius.pill};
   color: ${({ theme }) => theme.colors.textSecondary};
   background: ${({ theme }) => theme.colors.surfaceAlt};
-  font-size: ${({ theme }) => theme.typography.micro.fontSize};
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.typography.small.fontSize};
+  font-weight: 800;
 `;
 
 export const List = styled.div<IFavoriteListProps>`

@@ -21,9 +21,9 @@ export const Label = styled.h2`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[2]};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.typography.micro.fontSize};
-  font-weight: ${({ theme }) => theme.typography.micro.fontWeight};
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: ${({ theme }) => theme.typography.small.fontSize};
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 `;
