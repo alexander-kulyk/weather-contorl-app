@@ -51,8 +51,11 @@ export const Count = styled.span`
 `;
 
 export const List = styled.div<IFavoriteListProps>`
+  position: relative;
   display: grid;
   gap: ${({ theme }) => theme.spacing[3]};
+  margin-top: ${({ theme }) => theme.spacing[1]};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
 
   ${({ $isScrollable, theme }) =>
     $isScrollable &&
@@ -60,6 +63,20 @@ export const List = styled.div<IFavoriteListProps>`
       max-height: 380px;
       overflow-y: auto;
       padding-right: ${theme.spacing[2]};
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 ${theme.spacing[4]},
+        #000 calc(100% - ${theme.spacing[12]}),
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 ${theme.spacing[4]},
+        #000 calc(100% - ${theme.spacing[12]}),
+        transparent 100%
+      );
 
       scrollbar-width: thin;
       scrollbar-color: ${theme.colors.border} transparent;
@@ -84,6 +101,7 @@ export const ViewAllButton = styled.button`
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[3]};
+  margin-top: ${({ theme }) => theme.spacing[2]};
   padding: ${({ theme }) => theme.spacing[4]};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
