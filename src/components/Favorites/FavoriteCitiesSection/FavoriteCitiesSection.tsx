@@ -4,6 +4,7 @@ import { ChevronRight, Heart } from 'lucide-react';
 //components
 import { Button } from '../../Button';
 import { EmptyState } from '../../EmptyState';
+import { ClearFavoritesConfirmation } from '../ClearFavoritesConfirmation';
 import { FavoriteCityItem } from '../FavoriteCityItem';
 import { FavoritesModal } from '../FavoritesModal';
 //other
@@ -47,7 +48,7 @@ export const FavoriteCitiesSection: React.FC<IFavoriteCitiesSectionProps> = ({
             tone='secondary'
             size='sm'
             aria-label='Clear all favorite cities'
-            onClick={handlers.handleClearAll}
+            onClick={handlers.handleOpenClearConfirmation}
           >
             Clear all
           </Button>
@@ -94,6 +95,13 @@ export const FavoriteCitiesSection: React.FC<IFavoriteCitiesSectionProps> = ({
         selectedWeatherId={selectedWeatherId}
         onClose={handlers.handleCloseModal}
         onSelect={onSelect}
+      />
+
+      <ClearFavoritesConfirmation
+        favoritesCount={values.favoritesCount}
+        isOpen={hasFavorites && values.isClearConfirmationOpen}
+        onCancel={handlers.handleCloseClearConfirmation}
+        onConfirm={handlers.handleConfirmClearAll}
       />
     </S.Section>
   );

@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
 import { Button } from '../Button';
 import type {
+  IConfirmationActionsProps,
+  IConfirmationIconProps,
   IConfirmationLayoutProps,
   IConfirmationToneProps,
 } from './types';
@@ -60,19 +62,20 @@ export const Overlay = styled.div<IConfirmationLayoutProps>`
 `;
 
 export const Dialog = styled.div<IConfirmationLayoutProps>`
+  position: relative;
   width: min(
-    ${({ $layout }) => ($layout === 'page' ? '680px' : '520px')},
+    ${({ $layout }) => ($layout === 'page' ? '680px' : '640px')},
     calc(100vw - ${({ theme }) => theme.spacing[12]})
   );
   max-height: calc(100vh - ${({ theme }) => theme.spacing[16]});
   display: grid;
   justify-items: center;
   gap: ${({ theme, $layout }) =>
-    $layout === 'page' ? theme.spacing[8] : theme.spacing[5]};
+    $layout === 'page' ? theme.spacing[8] : theme.spacing[8]};
   padding: ${({ theme, $layout }) =>
     $layout === 'page'
       ? `${theme.spacing[16]} ${theme.spacing[12]}`
-      : `${theme.spacing[8]} ${theme.spacing[6]}`};
+      : `${theme.spacing[12]} ${theme.spacing[10]}`};
   overflow: auto;
   border-radius: ${({ theme }) => theme.radius.xl};
   color: ${({ theme }) => theme.colors.textPrimary};
@@ -88,9 +91,21 @@ export const Dialog = styled.div<IConfirmationLayoutProps>`
   }
 `;
 
-export const Icon = styled.span<IConfirmationToneProps>`
-  width: 108px;
-  height: 108px;
+export const CloseButton = styled(Button)`
+  position: absolute;
+  top: ${({ theme }) => theme.spacing[5]};
+  right: ${({ theme }) => theme.spacing[5]};
+  color: ${({ theme }) => theme.colors.textSecondary};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    top: ${({ theme }) => theme.spacing[4]};
+    right: ${({ theme }) => theme.spacing[4]};
+  }
+`;
+
+export const Icon = styled.span<IConfirmationIconProps>`
+  width: ${({ $layout }) => ($layout === 'page' ? '108px' : '96px')};
+  height: ${({ $layout }) => ($layout === 'page' ? '108px' : '96px')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -113,7 +128,7 @@ export const Copy = styled.div`
 export const Title = styled.p<IConfirmationLayoutProps>`
   max-width: 560px;
   color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: ${({ $layout }) => ($layout === 'page' ? '2.5rem' : '1.5rem')};
+  font-size: ${({ $layout }) => ($layout === 'page' ? '2.5rem' : '2rem')};
   font-weight: 800;
   line-height: 1.2;
 
@@ -129,7 +144,20 @@ export const Description = styled.p`
   line-height: ${({ theme }) => theme.typography.body.lineHeight};
 `;
 
-export const ConfirmButton = styled(Button)<IConfirmationLayoutProps>`
+export const Actions = styled.div<IConfirmationActionsProps>`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing[4]};
+  max-width: ${({ $hasCancel }) => ($hasCancel ? '400px' : '220px')};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    max-width: none;
+    flex-direction: column-reverse;
+  }
+`;
+
+const actionButtonStyles = css<IConfirmationLayoutProps>`
   min-width: 180px;
   font-size: ${({ $layout }) => ($layout === 'page' ? '1.5rem' : '1.125rem')};
   font-weight: 800;
@@ -145,4 +173,12 @@ export const ConfirmButton = styled(Button)<IConfirmationLayoutProps>`
     min-height: 56px;
     font-size: 1.125rem;
   }
+`;
+
+export const CancelButton = styled(Button)<IConfirmationLayoutProps>`
+  ${actionButtonStyles}
+`;
+
+export const ConfirmButton = styled(Button)<IConfirmationLayoutProps>`
+  ${actionButtonStyles}
 `;

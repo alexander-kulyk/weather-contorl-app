@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 //components
 import { Button } from '../../Button';
 import { EmptyState } from '../../EmptyState';
+import { ClearFavoritesConfirmation } from '../ClearFavoritesConfirmation';
 import { FavoriteCityItem } from '../FavoriteCityItem';
 import { Modal } from '../../Modal';
 //other
@@ -40,7 +41,7 @@ export const FavoritesModal: React.FC<IFavoritesModalProps> = ({
         size='md'
         aria-label='Clear all favorite cities'
         disabled={!hasFavorites}
-        onClick={handlers.handleClearAll}
+        onClick={handlers.handleOpenClearConfirmation}
       >
         Clear all favorites
       </Button>
@@ -48,40 +49,49 @@ export const FavoritesModal: React.FC<IFavoritesModalProps> = ({
   );
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title='Favorite cities'
-      description={MODAL_DESCRIPTION}
-      titleIcon={
-        <Heart size={18} strokeWidth={1.8} fill='currentColor' aria-hidden='true' />
-      }
-      headerActions={
-        <S.HeaderCount aria-label={`${values.favoritesCount} favorite cities`}>
-          {values.favoritesCount}
-        </S.HeaderCount>
-      }
-      footer={footer}
-      size='md'
-    >
-      {hasFavorites ? (
-        <S.List role='list'>
-          {values.favorites.map((favorite: IFavoriteCity) => (
-            <FavoriteCityItem
-              key={favorite.id}
-              favorite={favorite}
-              isSelected={selectedWeatherId === favorite.id}
-              onSelect={handlers.handleSelect}
-              onRemove={handlers.handleRemove}
-            />
-          ))}
-        </S.List>
-      ) : (
-        <EmptyState
-          title='No favorite cities yet.'
-          description='Add a city from search results or details to keep it here.'
-        />
-      )}
-    </Modal>
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        title='Favorite cities'
+        description={MODAL_DESCRIPTION}
+        titleIcon={
+          <Heart size={18} strokeWidth={1.8} fill='currentColor' aria-hidden='true' />
+        }
+        headerActions={
+          <S.HeaderCount aria-label={`${values.favoritesCount} favorite cities`}>
+            {values.favoritesCount}
+          </S.HeaderCount>
+        }
+        footer={footer}
+        size='md'
+      >
+        {hasFavorites ? (
+          <S.List role='list'>
+            {values.favorites.map((favorite: IFavoriteCity) => (
+              <FavoriteCityItem
+                key={favorite.id}
+                favorite={favorite}
+                isSelected={selectedWeatherId === favorite.id}
+                onSelect={handlers.handleSelect}
+                onRemove={handlers.handleRemove}
+              />
+            ))}
+          </S.List>
+        ) : (
+          <EmptyState
+            title='No favorite cities yet.'
+            description='Add a city from search results or details to keep it here.'
+          />
+        )}
+      </Modal>
+
+      <ClearFavoritesConfirmation
+        favoritesCount={values.favoritesCount}
+        isOpen={isOpen && hasFavorites && values.isClearConfirmationOpen}
+        onCancel={handlers.handleCloseClearConfirmation}
+        onConfirm={handlers.handleConfirmClearAll}
+      />
+    </>
   );
 };
