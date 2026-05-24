@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 export const Card = styled.section`
   position: relative;
+  min-height: 100%;
   display: grid;
+  align-content: start;
   gap: ${({ theme }) => theme.spacing[6]};
   padding: ${({ theme }) => theme.spacing[10]};
   border-radius: ${({ theme }) => theme.radius.xl};

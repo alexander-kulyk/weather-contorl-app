@@ -18,7 +18,7 @@ export const Shell = styled.div`
 export const Workspace = styled.main`
   display: grid;
   grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
-  align-items: start;
+  align-items: stretch;
   gap: ${({ theme }) => theme.spacing[6]};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -38,4 +38,10 @@ export const Sidebar = styled.aside`
 
 export const Details = styled.div`
   min-width: 0;
+  display: grid;
+  align-self: stretch;
+
+  > * {
+    min-height: 100%;
+  }
 `;

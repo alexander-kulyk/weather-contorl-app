@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import type { IEmptyStateToneProps } from './types';
 
 export const Wrapper = styled.div`
   min-height: 260px;
@@ -24,15 +25,17 @@ export const Content = styled.div`
   justify-items: center;
 `;
 
-export const Icon = styled.div`
+export const Icon = styled.div<IEmptyStateToneProps>`
   width: ${({ theme }) => theme.spacing[16]};
   height: ${({ theme }) => theme.spacing[16]};
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: ${({ theme }) => theme.radius.pill};
-  color: ${({ theme }) => theme.colors.primary};
-  background: ${({ theme }) => theme.colors.primarySoft};
+  color: ${({ theme, $tone }) =>
+    $tone === 'accent' ? theme.colors.accent : theme.colors.primary};
+  background: ${({ theme, $tone }) =>
+    $tone === 'accent' ? theme.colors.accentSoft : theme.colors.primarySoft};
 `;
 
 export const Title = styled.p`

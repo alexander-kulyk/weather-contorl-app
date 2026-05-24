@@ -27,7 +27,6 @@ export const GlobalStyles = createGlobalStyle`
       radial-gradient(circle at top left, rgba(59, 111, 245, 0.08), transparent 28rem),
       ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.textPrimary};
-    font-family: ${({ theme }) => theme.typography.fontFamily};
     letter-spacing: 0;
   }
 

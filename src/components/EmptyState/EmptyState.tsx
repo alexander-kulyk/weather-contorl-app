@@ -5,13 +5,18 @@ import { getEmptyStateIcon } from './utils';
 import type { IEmptyStateProps } from './types';
 import * as S from './styled';
 
-export const EmptyState: React.FC<IEmptyStateProps> = ({ title, description, icon }) => {
+export const EmptyState: React.FC<IEmptyStateProps> = ({
+  title,
+  description,
+  icon,
+  tone = 'primary',
+}) => {
   const renderedIcon = getEmptyStateIcon(icon);
 
   return (
     <S.Wrapper>
       <S.Content>
-        <S.Icon>{renderedIcon}</S.Icon>
+        <S.Icon $tone={tone}>{renderedIcon}</S.Icon>
         <S.Title>{title}</S.Title>
         {description && <S.Description>{description}</S.Description>}
       </S.Content>

@@ -19,8 +19,7 @@ export const theme = {
     whiteAlpha: 'rgba(255, 255, 255, 0.52)',
   },
   typography: {
-    fontFamily:
-      'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    fontFamily: "'Inter', sans-serif",
     weatherNumber: {
       fontSize: '6rem',
       mobileFontSize: '4.5rem',
