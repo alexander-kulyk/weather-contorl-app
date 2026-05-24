@@ -1,5 +1,5 @@
 //core
-import React, { useCallback } from 'react';
+import React from 'react';
 //components
 import { FavoriteButton } from '../FavoriteButton';
 //other
@@ -15,25 +15,22 @@ export const FavoriteCityItem: React.FC<IFavoriteCityItemProps> = ({
   onSelect,
   onRemove,
 }) => {
-  const handleSelect = useCallback((): void => {
+  const handleSelect = (): void => {
     onSelect(favorite);
-  }, [favorite, onSelect]);
+  };
 
-  const handleRemove = useCallback((): void => {
+  const handleRemove = (): void => {
     onRemove(favorite.id);
-  }, [favorite.id, onRemove]);
+  };
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>): void => {
-      if (event.key !== 'Enter' && event.key !== ' ') {
-        return;
-      }
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
 
-      event.preventDefault();
-      onSelect(favorite);
-    },
-    [favorite, onSelect],
-  );
+    event.preventDefault();
+    onSelect(favorite);
+  };
 
   return (
     <S.Row

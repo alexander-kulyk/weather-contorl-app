@@ -1,5 +1,5 @@
 //core
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useTheme } from 'styled-components';
 import {
   Area,
@@ -52,11 +52,6 @@ export const HourlyForecastChart: React.FC<IHourlyForecastChartProps> = ({
     [theme],
   );
 
-  const formatTick = useCallback(
-    (value: string | number): string => formatTemperatureTick(value),
-    [],
-  );
-
   if (chartData.length === 0) {
     return <EmptyState title='Hourly forecast data is not available.' />;
   }
@@ -82,7 +77,7 @@ export const HourlyForecastChart: React.FC<IHourlyForecastChartProps> = ({
               axisLine={false}
               tickLine={false}
               tick={{ fill: weatherTheme.inkSoft, fontSize: 12 }}
-              tickFormatter={formatTick}
+              tickFormatter={formatTemperatureTick}
               width={44}
             />
             <Tooltip

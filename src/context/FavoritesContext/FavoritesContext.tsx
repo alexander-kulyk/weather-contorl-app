@@ -1,5 +1,5 @@
 //core
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { FC } from 'react';
 //other
 import {
@@ -28,50 +28,44 @@ export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => 
 
   const favoritesCount = favorites.length;
 
-  const isFavorite = useCallback(
-    (cityId: string): boolean => favoriteIds.includes(cityId),
-    [favoriteIds],
-  );
+  const isFavorite = (cityId: string): boolean => favoriteIds.includes(cityId);
 
-  const addFavorite = useCallback((favorite: IFavoriteCity): void => {
+  const addFavorite = (favorite: IFavoriteCity): void => {
     setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] =>
       upsertFavoriteCity(currentFavorites, favorite),
     );
-  }, []);
+  };
 
-  const removeFavorite = useCallback((cityId: string): void => {
+  const removeFavorite = (cityId: string): void => {
     setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] =>
       currentFavorites.filter(
         (favorite: IFavoriteCity) => favorite.id !== cityId,
       ),
     );
-  }, []);
+  };
 
-  const clearFavorites = useCallback((): void => {
+  const clearFavorites = (): void => {
     setFavorites([]);
     clearStoredFavoriteCities();
-  }, []);
+  };
 
-  const toggleWeatherFavorite = useCallback(
-    (weather: IWeatherResponse): void => {
-      const favorite = createFavoriteCity(weather);
+  const toggleWeatherFavorite = (weather: IWeatherResponse): void => {
+    const favorite = createFavoriteCity(weather);
 
-      setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] => {
-        const exists = currentFavorites.some(
-          (item: IFavoriteCity) => item.id === favorite.id,
+    setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] => {
+      const exists = currentFavorites.some(
+        (item: IFavoriteCity) => item.id === favorite.id,
+      );
+
+      if (exists) {
+        return currentFavorites.filter(
+          (item: IFavoriteCity) => item.id !== favorite.id,
         );
+      }
 
-        if (exists) {
-          return currentFavorites.filter(
-            (item: IFavoriteCity) => item.id !== favorite.id,
-          );
-        }
-
-        return upsertFavoriteCity(currentFavorites, favorite);
-      });
-    },
-    [],
-  );
+      return upsertFavoriteCity(currentFavorites, favorite);
+    });
+  };
 
   const values = {
     favorites,

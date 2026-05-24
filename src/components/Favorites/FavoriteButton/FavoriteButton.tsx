@@ -1,5 +1,5 @@
 //core
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Heart } from 'lucide-react';
 //other
 import { getFavoriteButtonLabel } from './utils';
@@ -15,17 +15,14 @@ export const FavoriteButton: React.FC<IFavoriteButtonProps> = ({
 }) => {
   const accessibleLabel = getFavoriteButtonLabel(cityName, isFavorite);
 
-  const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>): void => {
-      event.stopPropagation();
-      onToggle();
-    },
-    [onToggle],
-  );
-
-  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLButtonElement>): void => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
-  }, []);
+    onToggle();
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>): void => {
+    event.stopPropagation();
+  };
 
   return (
     <S.Button

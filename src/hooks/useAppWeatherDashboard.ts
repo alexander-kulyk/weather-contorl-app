@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { useFavoritesContext, useWeatherContext } from '../context';
 import type { IFavoriteCity, IWeatherResponse } from '../types';
 
@@ -28,26 +27,17 @@ export const useAppWeatherDashboard = (): IUseAppWeatherDashboardReturn => {
     ? favorites.handlers.isFavorite(selectedWeatherId)
     : false;
 
-  const handleFavoriteSelect = useCallback(
-    (favorite: IFavoriteCity): void => {
-      weather.handlers.selectCityByName(favorite.resolvedAddress);
-    },
-    [weather.handlers],
-  );
+  const handleFavoriteSelect = (favorite: IFavoriteCity): void => {
+    weather.handlers.selectCityByName(favorite.resolvedAddress);
+  };
 
-  const handleWeatherSelect = useCallback(
-    (weatherResult: IWeatherResponse): void => {
-      weather.handlers.selectWeather(weatherResult);
-    },
-    [weather.handlers],
-  );
+  const handleWeatherSelect = (weatherResult: IWeatherResponse): void => {
+    weather.handlers.selectWeather(weatherResult);
+  };
 
-  const handleWeatherFavoriteToggle = useCallback(
-    (weatherResult: IWeatherResponse): void => {
-      favorites.handlers.toggleWeatherFavorite(weatherResult);
-    },
-    [favorites.handlers],
-  );
+  const handleWeatherFavoriteToggle = (weatherResult: IWeatherResponse): void => {
+    favorites.handlers.toggleWeatherFavorite(weatherResult);
+  };
 
   return {
     values: {

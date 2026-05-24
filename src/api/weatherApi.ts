@@ -14,20 +14,6 @@ import type {
 } from '../types';
 import { API } from './constants';
 
-export const searchWeatherByCity = async (
-  city: string,
-  signal?: AbortSignal,
-): Promise<IWeatherResponse[]> => {
-  const weather = await fetchTimelineWeather(city, signal);
-
-  return [weather];
-};
-
-export const fetchWeatherByCity = async (
-  city: string,
-  signal?: AbortSignal,
-): Promise<IWeatherResponse> => fetchTimelineWeather(city, signal);
-
 const fetchTimelineWeather = async (
   city: string,
   signal?: AbortSignal,
@@ -57,4 +43,24 @@ const fetchTimelineWeather = async (
 
     throw handleApiError(error);
   }
+};
+
+const searchByCity = async (
+  city: string,
+  signal?: AbortSignal,
+): Promise<IWeatherResponse[]> => {
+  const weather = await fetchTimelineWeather(city, signal);
+
+  return [weather];
+};
+
+const fetchWeatherByCity = async (
+  city: string,
+  signal?: AbortSignal,
+): Promise<IWeatherResponse> => fetchTimelineWeather(city, signal);
+
+export const weatherApi = {
+  fetchTimelineWeather,
+  searchByCity,
+  fetchWeatherByCity,
 };

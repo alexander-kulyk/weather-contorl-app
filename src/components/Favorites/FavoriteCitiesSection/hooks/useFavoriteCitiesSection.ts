@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useFavoritesContext } from '../../../../context';
 import type { IFavoriteCity } from '../../../../types';
 
@@ -26,33 +26,30 @@ export const useFavoriteCitiesSection = (): IUseFavoriteCitiesSectionReturn => {
     useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleRemove = useCallback(
-    (cityId: string): void => {
-      favoritesHandlers.removeFavorite(cityId);
-    },
-    [favoritesHandlers],
-  );
+  const handleRemove = (cityId: string): void => {
+    favoritesHandlers.removeFavorite(cityId);
+  };
 
-  const handleOpenClearConfirmation = useCallback((): void => {
+  const handleOpenClearConfirmation = (): void => {
     setIsClearConfirmationOpen(true);
-  }, []);
+  };
 
-  const handleCloseClearConfirmation = useCallback((): void => {
+  const handleCloseClearConfirmation = (): void => {
     setIsClearConfirmationOpen(false);
-  }, []);
+  };
 
-  const handleConfirmClearAll = useCallback((): void => {
+  const handleConfirmClearAll = (): void => {
     favoritesHandlers.clearFavorites();
     setIsClearConfirmationOpen(false);
-  }, [favoritesHandlers]);
+  };
 
-  const handleOpenModal = useCallback((): void => {
+  const handleOpenModal = (): void => {
     setIsModalOpen(true);
-  }, []);
+  };
 
-  const handleCloseModal = useCallback((): void => {
+  const handleCloseModal = (): void => {
     setIsModalOpen(false);
-  }, []);
+  };
 
   return {
     values: {

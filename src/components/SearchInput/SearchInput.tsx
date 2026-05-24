@@ -1,5 +1,5 @@
 //core
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { LoaderCircle, Search, X } from 'lucide-react';
 //components
 import { Button } from '../Button';
@@ -24,12 +24,9 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
   const { hasError, hasValue, isLoading, showErrorText } = state;
   const describedBy = getSearchInputDescribedBy(showErrorText, SEARCH_ERROR_ID);
 
-  const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>): void => {
-      onChange(event.target.value);
-    },
-    [onChange],
-  );
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    onChange(event.target.value);
+  };
 
   return (
     <S.Wrapper>

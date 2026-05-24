@@ -1,5 +1,5 @@
 //core
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 //other
 import type { ForecastRange } from '../../types';
 import { getForecastSwitcherState } from './utils';
@@ -7,13 +7,13 @@ import type { IForecastSwitcherProps, IForecastSwitcherState } from './types';
 import * as S from './styled';
 
 export const ForecastSwitcher: React.FC<IForecastSwitcherProps> = ({ value, onChange }) => {
-  const handleSevenDays = useCallback((): void => {
+  const handleSevenDays = (): void => {
     onChange(7);
-  }, [onChange]);
+  };
 
-  const handleFifteenDays = useCallback((): void => {
+  const handleFifteenDays = (): void => {
     onChange(15);
-  }, [onChange]);
+  };
 
   const state = useMemo<IForecastSwitcherState>(
     () => getForecastSwitcherState(value),

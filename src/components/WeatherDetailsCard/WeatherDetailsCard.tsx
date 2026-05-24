@@ -1,5 +1,5 @@
 //core
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { MapPin } from 'lucide-react';
 //components
 import { ErrorMessage } from '../ErrorMessage';
@@ -18,7 +18,7 @@ import type {
   IWeatherDetailsCardProps,
   IWeatherDetailsViewModel,
 } from './types';
-import type { ForecastRange, IWeatherMetric } from '../../types';
+import type { IWeatherMetric } from '../../types';
 import * as S from './styled';
 
 export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
@@ -41,18 +41,11 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
     [forecastRange, weather],
   );
 
-  const handleFavoriteToggle = useCallback((): void => {
+  const handleFavoriteToggle = (): void => {
     if (weather) {
       onToggleFavorite(weather);
     }
-  }, [onToggleFavorite, weather]);
-
-  const handleForecastRangeChange = useCallback(
-    (range: ForecastRange): void => {
-      onForecastRangeChange(range);
-    },
-    [onForecastRangeChange],
-  );
+  };
 
   if (status === 'loading') {
     return <LoadingSkeleton variant='details' />;
@@ -126,7 +119,7 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
           <S.SectionTitle id='forecast-title'>Forecast</S.SectionTitle>
           <ForecastSwitcher
             value={forecastRange}
-            onChange={handleForecastRangeChange}
+            onChange={onForecastRangeChange}
           />
         </S.SectionHeader>
         <ForecastList days={forecastDays} themeKey={weather.themeKey} />

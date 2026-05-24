@@ -1,5 +1,5 @@
 //core
-import React, { useCallback } from 'react';
+import React from 'react';
 import { ArrowLeft, CloudSun, MapPin } from 'lucide-react';
 //components
 import { Button } from '../Button';
@@ -12,13 +12,13 @@ import * as S from './styled';
 const PREVIEW_ICON_SIZE = 56;
 
 export const WeatherDetailsStub: React.FC = () => {
-  const handleFocusSearch = useCallback((): void => {
+  const handleFocusSearch = (): void => {
     if (typeof document === 'undefined') {
       return;
     }
 
     document.getElementById(SEARCH_INPUT_ID)?.focus();
-  }, []);
+  };
 
   return (
     <S.Card aria-labelledby='weather-stub-title'>

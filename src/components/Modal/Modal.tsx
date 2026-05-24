@@ -1,5 +1,5 @@
 //core
-import React, { useCallback } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 //components
@@ -27,20 +27,17 @@ export const Modal: React.FC<IModalProps> = ({
     onClose,
   });
 
-  const handleOverlayClick = useCallback((): void => {
+  const handleOverlayClick = (): void => {
     if (!closeOnOverlayClick) {
       return;
     }
 
     onClose();
-  }, [closeOnOverlayClick, onClose]);
+  };
 
-  const handleSurfaceClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>): void => {
-      event.stopPropagation();
-    },
-    [],
-  );
+  const handleSurfaceClick = (event: React.MouseEvent<HTMLDivElement>): void => {
+    event.stopPropagation();
+  };
 
   if (!isOpen) {
     return null;

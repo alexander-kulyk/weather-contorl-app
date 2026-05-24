@@ -1,5 +1,5 @@
 //core
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 //components
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 //other
@@ -21,25 +21,22 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = ({
     [weather],
   );
 
-  const handleSelect = useCallback((): void => {
+  const handleSelect = (): void => {
     if (!disabled) {
       onSelect(weather);
     }
-  }, [disabled, onSelect, weather]);
+  };
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>): void => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        handleSelect();
-      }
-    },
-    [handleSelect],
-  );
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleSelect();
+    }
+  };
 
-  const handleFavoriteToggle = useCallback((): void => {
+  const handleFavoriteToggle = (): void => {
     onToggleFavorite(weather);
-  }, [onToggleFavorite, weather]);
+  };
 
   return (
     <S.Row

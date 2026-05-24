@@ -1,8 +1,4 @@
-import {
-  fetchWeatherByCity,
-  isApiError,
-  isRequestCanceled,
-} from '../../../api';
+import { isApiError, isRequestCanceled, weatherApi } from '../../../api';
 import type { IWeatherResponse } from '../../../types';
 import { toAppError } from '../../../utils';
 import type { IFetchSelectedCityWeatherParams } from '../types';
@@ -16,7 +12,10 @@ export const fetchSelectedCityWeather = async ({
   signal,
 }: IFetchSelectedCityWeatherParams): Promise<void> => {
   try {
-    const weather: IWeatherResponse = await fetchWeatherByCity(city, signal);
+    const weather: IWeatherResponse = await weatherApi.fetchWeatherByCity(
+      city,
+      signal,
+    );
 
     if (signal.aborted) {
       return;

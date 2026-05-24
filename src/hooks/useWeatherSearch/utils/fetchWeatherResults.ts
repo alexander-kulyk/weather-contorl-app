@@ -1,8 +1,4 @@
-import {
-  isApiError,
-  isRequestCanceled,
-  searchWeatherByCity,
-} from '../../../api';
+import { isApiError, isRequestCanceled, weatherApi } from '../../../api';
 import type { IWeatherResponse } from '../../../types';
 import { toAppError } from '../../../utils';
 import type { IFetchWeatherResultsParams } from '../types';
@@ -20,7 +16,7 @@ export const fetchWeatherResults = async ({
   setError(null);
 
   try {
-    const weatherResults: IWeatherResponse[] = await searchWeatherByCity(
+    const weatherResults: IWeatherResponse[] = await weatherApi.searchByCity(
       query,
       signal,
     );
