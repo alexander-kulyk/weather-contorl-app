@@ -1,7 +1,7 @@
 //core
 import React, { useCallback, useMemo } from 'react';
 //components
-import { FavoriteButton } from '../FavoriteButton';
+import { FavoriteButton } from '../Favorites/FavoriteButton';
 //other
 import { getWeatherIcon } from '../../utils';
 import { buildViewModel } from './utils';

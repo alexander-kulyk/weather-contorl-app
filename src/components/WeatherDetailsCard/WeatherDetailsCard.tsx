@@ -4,7 +4,7 @@ import { MapPin } from 'lucide-react';
 //components
 import { EmptyState } from '../EmptyState';
 import { ErrorMessage } from '../ErrorMessage';
-import { FavoriteButton } from '../FavoriteButton';
+import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { ForecastList } from '../ForecastList';
 import { ForecastSwitcher } from '../ForecastSwitcher';
 import { HourlyForecastChart } from '../HourlyForecastChart';
