@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
 export const Alert = styled.div`
-  width: min(520px, calc(100vw - ${({ theme }) => theme.spacing[8]}));
+  width: 100%;
+  min-height: 180px;
   display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
   gap: ${({ theme }) => theme.spacing[4]};
   padding: ${({ theme }) => theme.spacing[5]};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -11,26 +14,26 @@ export const Alert = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   box-shadow: ${({ theme }) => theme.shadows.sm};
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: calc(100vw - ${({ theme }) => theme.spacing[6]});
-    padding: ${({ theme }) => theme.spacing[4]};
+    grid-template-columns: 1fr;
+    min-height: auto;
     gap: ${({ theme }) => theme.spacing[4]};
+    padding: ${({ theme }) => theme.spacing[4]};
   }
 `;
 
-export const Header = styled.div`
+export const IconColumn = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: ${({ theme }) => theme.spacing[4]};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    gap: ${({ theme }) => theme.spacing[3]};
-  }
 `;
 
 export const Icon = styled.span`
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -40,96 +43,106 @@ export const Icon = styled.span`
   background: ${({ theme }) => theme.colors.errorSoft};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+  }
+`;
+
+export const Content = styled.div`
+  min-width: 0;
+  display: grid;
+  gap: ${({ theme }) => theme.spacing[3]};
+`;
+
+export const Header = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing[3]};
+`;
+
+export const StatusBadge = styled.span`
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 ${({ theme }) => theme.spacing[4]};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  color: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => theme.colors.error};
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    min-height: 40px;
+    padding: 0 ${({ theme }) => theme.spacing[3]};
+    font-size: 1.25rem;
+  }
+`;
+
+export const CodeBadge = styled.span`
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 ${({ theme }) => theme.spacing[3]};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  color: ${({ theme }) => theme.colors.error};
+  background: ${({ theme }) => theme.colors.errorSoft};
+  font-size: ${({ theme }) => theme.typography.micro.fontSize};
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    min-height: 36px;
+    padding: 0 ${({ theme }) => theme.spacing[3]};
+    font-size: ${({ theme }) => theme.typography.micro.fontSize};
   }
 `;
 
 export const Copy = styled.div`
   min-width: 0;
   display: grid;
-  gap: ${({ theme }) => theme.spacing[2]};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    gap: ${({ theme }) => theme.spacing[2]};
-  }
+  gap: ${({ theme }) => theme.spacing[3]};
 `;
 
 export const Title = styled.p`
   color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 800;
   line-height: 1.25;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
-`;
-
-export const StatusRow = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing[2]};
-`;
-
-export const Status = styled.span`
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: 0.875rem;
-  line-height: 1.2;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: ${({ theme }) => theme.typography.small.fontSize};
-  }
-`;
-
-export const Separator = styled.span`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.typography.small.fontSize};
-`;
-
-export const CodeBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 0 ${({ theme }) => theme.spacing[2]};
-  border-radius: ${({ theme }) => theme.radius.xs};
-  color: ${({ theme }) => theme.colors.error};
-  background: ${({ theme }) => theme.colors.errorSoft};
-  font-size: ${({ theme }) => theme.typography.micro.fontSize};
-  font-weight: 800;
-  letter-spacing: 0.06em;
 `;
 
 export const Description = styled.p`
-  max-width: 420px;
+  max-width: 380px;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.typography.small.fontSize};
   line-height: 1.45;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: ${({ theme }) => theme.typography.small.fontSize};
+    font-size: ${({ theme }) => theme.typography.body.fontSize};
   }
 `;
 
-export const Meta = styled.p`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.typography.micro.fontSize};
-  font-weight: ${({ theme }) => theme.typography.micro.fontWeight};
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-`;
-
-export const Footer = styled.div`
+export const Actions = styled.div`
+  align-self: end;
+  grid-column: 2;
   display: flex;
   justify-content: flex-end;
+  gap: ${({ theme }) => theme.spacing[3]};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    justify-content: stretch;
+    grid-column: auto;
+    flex-direction: column;
   }
 `;
 
 export const Action = styled.button`
+  min-width: 128px;
   min-height: ${({ theme }) => theme.buttonSizes.control};
   padding: 0 ${({ theme }) => theme.spacing[5]};
   border: 0;
@@ -154,5 +167,7 @@ export const Action = styled.button`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     width: 100%;
+    min-height: ${({ theme }) => theme.buttonSizes.control};
+    font-size: ${({ theme }) => theme.typography.body.fontSize};
   }
 `;

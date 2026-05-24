@@ -18,10 +18,11 @@ export class ErrorBoundary extends Component<
 > {
   public state: IErrorBoundaryState = {
     hasError: false,
+    isDismissed: false,
   };
 
   public static getDerivedStateFromError(): IErrorBoundaryState {
-    return { hasError: true };
+    return { hasError: true, isDismissed: false };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
@@ -37,6 +38,10 @@ export class ErrorBoundary extends Component<
   }
 
   public render(): ReactNode {
+    if (this.state.isDismissed) {
+      return null;
+    }
+
     if (!this.state.hasError) {
       return this.props.children;
     }
@@ -44,7 +49,7 @@ export class ErrorBoundary extends Component<
     const component = this.props.component ?? DEFAULT_COMPONENT_NAME;
     const title = this.props.fallbackTitle ?? DEFAULT_FALLBACK_TITLE;
     const confirmLabel = this.props.fallbackConfirmLabel ?? DEFAULT_CONFIRM_LABEL;
-    const layout = this.props.fallbackLayout ?? 'inline';
+    const layout = this.props.fallbackLayout ?? 'page';
     const icon = this.props.fallbackIcon ?? (
       <AlertTriangle size={42} strokeWidth={1.7} aria-hidden="true" />
     );
@@ -59,12 +64,12 @@ export class ErrorBoundary extends Component<
         layout={layout}
         role="alertdialog"
         ariaLabel={`${component} error`}
-        onConfirm={this.handleReset}
+        onConfirm={this.handleConfirm}
       />
     );
   }
 
-  private handleReset = (): void => {
-    this.setState({ hasError: false });
+  private handleConfirm = (): void => {
+    this.setState({ hasError: false, isDismissed: true });
   };
 }

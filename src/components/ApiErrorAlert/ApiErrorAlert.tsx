@@ -12,7 +12,7 @@ const TOASTER_STYLE: React.CSSProperties & Record<'--width', string> = {
 };
 
 export const ApiErrorAlert: React.FC<IApiErrorAlertProps> = ({
-  position = 'bottom-left',
+  position = 'bottom-right',
 }) => {
   const { values, handlers } = useApiErrorContext();
   const toastIdRef = useRef<string | number | null>(null);
@@ -23,18 +23,14 @@ export const ApiErrorAlert: React.FC<IApiErrorAlertProps> = ({
     }
 
     const statusLabel = values.apiError.status
-      ? `Status ${values.apiError.status}`
-      : 'No HTTP status';
-    const metaLabel = values.apiError.details
-      ? `API_ERROR - ${values.apiError.details}`
-      : 'API_ERROR - VISUAL_CROSSING_TIMELINE';
+      ? `${values.apiError.status}`
+      : 'No status';
 
     return {
       title: values.apiError.message,
       description: getApiErrorDescription(values.apiError.code),
       statusLabel,
       codeLabel: values.apiError.code,
-      metaLabel,
     };
   }, [values.apiError]);
 
@@ -59,26 +55,26 @@ export const ApiErrorAlert: React.FC<IApiErrorAlertProps> = ({
     toastIdRef.current = toast.custom(
       () => (
         <S.Alert role='alert' aria-live='assertive'>
-          <S.Header>
+          <S.IconColumn>
             <S.Icon>
-              <AlertTriangle size={22} strokeWidth={1.7} aria-hidden='true' />
+              <AlertTriangle size={26} strokeWidth={1.7} aria-hidden='true' />
             </S.Icon>
+          </S.IconColumn>
+          <S.Content>
+            <S.Header>
+              <S.StatusBadge>{details.statusLabel}</S.StatusBadge>
+              <S.CodeBadge>{details.codeLabel}</S.CodeBadge>
+            </S.Header>
             <S.Copy>
               <S.Title>{details.title}</S.Title>
-              <S.StatusRow>
-                <S.Status>{details.statusLabel}</S.Status>
-                <S.Separator>-</S.Separator>
-                <S.CodeBadge>{details.codeLabel}</S.CodeBadge>
-              </S.StatusRow>
               <S.Description>{details.description}</S.Description>
-              <S.Meta>{details.metaLabel}</S.Meta>
             </S.Copy>
-          </S.Header>
-          <S.Footer>
+          </S.Content>
+          <S.Actions>
             <S.Action type='button' onClick={handleConfirm}>
               Confirm
             </S.Action>
-          </S.Footer>
+          </S.Actions>
         </S.Alert>
       ),
       {

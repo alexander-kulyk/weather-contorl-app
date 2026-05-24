@@ -1,5 +1,5 @@
 //core
-import React from 'react';
+import React, { useEffect } from 'react';
 //other
 import type { IConfirmationProps } from './types';
 import * as S from './styled';
@@ -12,26 +12,46 @@ export const Confirmation: React.FC<IConfirmationProps> = ({
   icon,
   confirmLabel = 'Confirm',
   tone = 'primary',
-  layout = 'inline',
+  layout = 'page',
   role = 'dialog',
   ariaLabel,
   onConfirm,
 }) => {
   const resolvedAriaLabel =
     ariaLabel ?? (typeof title === 'string' ? title : DEFAULT_ARIA_LABEL);
+  const isModalRole = role === 'dialog' || role === 'alertdialog';
+
+  useEffect((): (() => void) | undefined => {
+    if (typeof document === 'undefined') {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+
+    return (): void => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
 
   return (
-    <S.Surface $layout={layout}>
-      <S.Dialog $layout={layout} role={role} aria-label={resolvedAriaLabel}>
+    <S.Overlay $layout={layout}>
+      <S.Dialog
+        $layout={layout}
+        role={role}
+        aria-label={resolvedAriaLabel}
+        aria-modal={isModalRole}
+      >
         {icon && <S.Icon $tone={tone}>{icon}</S.Icon>}
         <S.Copy>
           <S.Title $layout={layout}>{title}</S.Title>
           {description && <S.Description>{description}</S.Description>}
         </S.Copy>
-        <S.ConfirmButton type="button" $tone={tone} onClick={onConfirm}>
+        <S.ConfirmButton type="button" $tone={tone} onClick={onConfirm} autoFocus>
           {confirmLabel}
         </S.ConfirmButton>
       </S.Dialog>
-    </S.Surface>
+    </S.Overlay>
   );
 };

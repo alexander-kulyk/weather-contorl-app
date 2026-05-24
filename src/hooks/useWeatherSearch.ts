@@ -4,6 +4,8 @@ import type { IApiError } from '../api';
 import type { AsyncStatus, IAppError, IWeatherResponse } from '../types';
 import { useDebounce } from './useDebounce';
 
+const LOCATION_NOT_FOUND_MESSAGE = 'No valid locations could be determined';
+
 interface IUseWeatherSearchParams {
   query: string;
   delayMs?: number;
@@ -31,7 +33,7 @@ interface IUseWeatherSearchReturn {
 export const useWeatherSearch = ({
   query,
   delayMs = 400,
-  minLength = 2,
+  minLength = 4,
   onApiError,
 }: IUseWeatherSearchParams): IUseWeatherSearchReturn => {
   const normalizedQuery = query.trim();
@@ -40,7 +42,8 @@ export const useWeatherSearch = ({
   const [status, setStatus] = useState<AsyncStatus>('idle');
   const [error, setError] = useState<IAppError | null>(null);
   const hasQueryableInput = normalizedQuery.length >= minLength;
-  const hasSearchStarted = hasQueryableInput && debouncedQuery.length >= minLength;
+  const hasSearchStarted =
+    hasQueryableInput && debouncedQuery.length >= minLength;
 
   const clearResults = useCallback((): void => {
     setResults([]);
@@ -74,17 +77,21 @@ export const useWeatherSearch = ({
           return;
         }
 
-        if (isApiError(requestError)) {
-          onApiError?.(requestError);
-        }
-
         const appError = toAppError(requestError);
 
         if (appError.code === 'NO_RESULTS') {
+          if (shouldReportApiError(requestError)) {
+            onApiError?.(requestError);
+          }
+
           setResults([]);
           setError(appError);
           setStatus('success');
           return;
+        }
+
+        if (isApiError(requestError)) {
+          onApiError?.(requestError);
         }
 
         setResults([]);
@@ -131,3 +138,10 @@ const toAppError = (error: unknown): IAppError => {
     message: 'Could not load weather data. Please try again.',
   };
 };
+
+const shouldReportApiError = (error: unknown): error is IApiError =>
+  isApiError(error) && !isLocationNotFoundError(error);
+
+const isLocationNotFoundError = (error: IApiError): boolean =>
+  error.code === 'NO_RESULTS' &&
+  Boolean(error.details?.includes(LOCATION_NOT_FOUND_MESSAGE));

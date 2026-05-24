@@ -20,4 +20,5 @@ export interface IErrorBoundaryProps {
 
 export interface IErrorBoundaryState {
   hasError: boolean;
+  isDismissed: boolean;
 }

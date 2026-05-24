@@ -12,7 +12,10 @@ export const handleApiError = (error: unknown): IApiError => {
 
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;
-    const details = error.response?.statusText;
+    const details = getErrorDetails(
+      error.response?.data,
+      error.response?.statusText,
+    );
 
     if (status === 400 || status === 404) {
       return createApiError(
@@ -42,4 +45,29 @@ export const handleApiError = (error: unknown): IApiError => {
     'API',
     'Could not load weather data. Please try again.',
   );
+};
+
+const getErrorDetails = (
+  responseData: unknown,
+  fallback?: string,
+): string | undefined => {
+  if (typeof responseData === 'string' && responseData.trim()) {
+    return responseData;
+  }
+
+  if (typeof responseData !== 'object' || responseData === null) {
+    return fallback;
+  }
+
+  const data = responseData as Record<string, unknown>;
+
+  if (typeof data.message === 'string' && data.message.trim()) {
+    return data.message;
+  }
+
+  if (typeof data.error === 'string' && data.error.trim()) {
+    return data.error;
+  }
+
+  return fallback;
 };

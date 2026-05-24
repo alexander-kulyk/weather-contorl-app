@@ -7,5 +7,4 @@ export interface IApiErrorDetails {
   description: string;
   statusLabel: string;
   codeLabel: string;
-  metaLabel: string;
 }

@@ -36,29 +36,35 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
       <S.Field $hasError={hasError}>
         <S.IconSlot $isLoading={isLoading}>
           {isLoading ? (
-            <LoaderCircle size={20} strokeWidth={1.5} aria-hidden="true" />
+            <LoaderCircle size={20} strokeWidth={1.5} aria-hidden='true' />
           ) : (
-            <Search size={20} strokeWidth={1.5} aria-hidden="true" />
+            <Search size={20} strokeWidth={1.5} aria-hidden='true' />
           )}
         </S.IconSlot>
         <S.Input
           id={SEARCH_INPUT_ID}
-          type="search"
+          type='search'
           value={value}
-          placeholder="Search city..."
+          placeholder='Search city...'
           disabled={disabled}
           aria-invalid={hasError}
           aria-describedby={describedBy}
-          autoComplete="off"
+          autoComplete='off'
           onChange={handleChange}
         />
         {hasValue && (
-          <S.ClearButton type="button" aria-label="Clear city search" onClick={onClear}>
-            <X size={16} strokeWidth={1.8} aria-hidden="true" />
+          <S.ClearButton
+            type='button'
+            aria-label='Clear city search'
+            onClick={onClear}
+          >
+            <X size={16} strokeWidth={1.8} aria-hidden='true' />
           </S.ClearButton>
         )}
       </S.Field>
-      {showErrorText && <S.ErrorText id={SEARCH_ERROR_ID}>{error?.message}</S.ErrorText>}
+      {showErrorText && (
+        <S.ErrorText id={SEARCH_ERROR_ID}>{error?.message}</S.ErrorText>
+      )}
     </S.Wrapper>
   );
 };

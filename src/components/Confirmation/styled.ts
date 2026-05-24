@@ -40,23 +40,30 @@ const getToneBackground = css<IConfirmationToneProps>`
   }}
 `;
 
-export const Surface = styled.div<IConfirmationLayoutProps>`
-  min-height: ${({ $layout }) => ($layout === 'page' ? '100vh' : '320px')};
+export const Overlay = styled.div<IConfirmationLayoutProps>`
+  position: fixed;
+  inset: 0;
+  z-index: 1000000000;
+  width: 100vw;
+  min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: ${({ theme, $layout }) =>
-    $layout === 'page' ? theme.spacing[8] : theme.spacing[4]};
-  border-radius: ${({ theme, $layout }) =>
-    $layout === 'page' ? '0' : theme.radius.lg};
-  background: ${({ theme }) =>
-    `linear-gradient(135deg, ${theme.colors.primarySoft} 0%, ${theme.colors.surfaceAlt} 100%)`};
+  padding: ${({ theme }) => theme.spacing[8]};
+  overflow: auto;
+  background: rgba(15, 23, 42, 0.38);
+  backdrop-filter: blur(6px);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => theme.spacing[4]};
+  }
 `;
 
 export const Dialog = styled.div<IConfirmationLayoutProps>`
   width: min(
     ${({ $layout }) => ($layout === 'page' ? '680px' : '520px')},
-    100%
+    calc(100vw - ${({ theme }) => theme.spacing[12]})
   );
+  max-height: calc(100vh - ${({ theme }) => theme.spacing[16]});
   display: grid;
   justify-items: center;
   gap: ${({ theme, $layout }) =>
@@ -65,6 +72,7 @@ export const Dialog = styled.div<IConfirmationLayoutProps>`
     $layout === 'page'
       ? `${theme.spacing[16]} ${theme.spacing[12]}`
       : `${theme.spacing[8]} ${theme.spacing[6]}`};
+  overflow: auto;
   border-radius: ${({ theme }) => theme.radius.xl};
   color: ${({ theme }) => theme.colors.textPrimary};
   text-align: center;
@@ -72,6 +80,8 @@ export const Dialog = styled.div<IConfirmationLayoutProps>`
   box-shadow: ${({ theme }) => theme.shadows.md};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 100%;
+    max-height: calc(100vh - ${({ theme }) => theme.spacing[8]});
     gap: ${({ theme }) => theme.spacing[6]};
     padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[5]};
   }
