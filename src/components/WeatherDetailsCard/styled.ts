@@ -97,11 +97,11 @@ export const SoftText = styled.p<ICardProps>`
 
 export const MetricsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(172px, 1fr));
   gap: ${({ theme }) => theme.spacing[3]};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(3, minmax(120px, 1fr));
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {

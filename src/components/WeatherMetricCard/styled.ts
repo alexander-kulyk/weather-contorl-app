@@ -18,7 +18,9 @@ export const Card = styled.article<IMetricProps>`
 `;
 
 export const Header = styled.div`
-  display: flex;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: ${({ theme }) => theme.spacing[3]};
 `;
@@ -35,18 +37,23 @@ export const Icon = styled.span<IMetricProps>`
 `;
 
 export const Label = styled.h3<IMetricProps>`
+  min-width: 0;
   color: ${({ theme, $themeKey }) => theme.weatherThemes[$themeKey].inkSoft};
   font-size: ${({ theme }) => theme.typography.micro.fontSize};
   font-weight: ${({ theme }) => theme.typography.micro.fontWeight};
   letter-spacing: 0.08em;
+  line-height: 1.35;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 `;
 
 export const Value = styled.p`
+  min-width: 0;
   color: inherit;
   font-size: 1.5rem;
   font-weight: 800;
   line-height: 1.15;
+  overflow-wrap: anywhere;
 `;
 
 export const Helper = styled.p<IMetricProps>`
