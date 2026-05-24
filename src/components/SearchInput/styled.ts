@@ -96,22 +96,6 @@ export const IconSlot = styled.span<{ $isLoading?: boolean }>`
     `}
 `;
 
-export const ClearButton = styled.button`
-  width: ${({ theme }) => theme.buttonSizes.iconSm};
-  height: ${({ theme }) => theme.buttonSizes.iconSm};
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  background: ${({ theme }) => theme.colors.surfaceAlt};
-
-  &:hover:not(:disabled) {
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-`;
-
 export const ErrorText = styled.p`
   color: ${({ theme }) => theme.colors.error};
   font-size: ${({ theme }) => theme.typography.small.fontSize};

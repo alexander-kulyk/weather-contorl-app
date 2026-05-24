@@ -2,6 +2,7 @@
 import React from 'react';
 import { ChevronRight, Heart } from 'lucide-react';
 //components
+import { Button } from '../Button';
 import { EmptyState } from '../EmptyState';
 import { FavoriteCityItem } from '../FavoriteCityItem';
 import { FavoritesModal } from '../FavoritesModal';
@@ -41,13 +42,15 @@ export const FavoriteCitiesSection: React.FC<IFavoriteCitiesSectionProps> = ({
           </S.Count>
         </S.HeaderLead>
         {hasFavorites && (
-          <S.ClearAllButton
-            type='button'
+          <Button
+            variant='ghost'
+            tone='secondary'
+            size='sm'
             aria-label='Clear all favorite cities'
             onClick={handlers.handleClearAll}
           >
             Clear all
-          </S.ClearAllButton>
+          </Button>
         )}
       </S.Header>
 

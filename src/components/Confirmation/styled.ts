@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Button } from '../Button';
 import type {
   IConfirmationLayoutProps,
   IConfirmationToneProps,
@@ -128,32 +129,16 @@ export const Description = styled.p`
   line-height: ${({ theme }) => theme.typography.body.lineHeight};
 `;
 
-export const ConfirmButton = styled.button<IConfirmationToneProps>`
+export const ConfirmButton = styled(Button)<IConfirmationLayoutProps>`
   min-width: 180px;
-  min-height: 76px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 ${({ theme }) => theme.spacing[8]};
-  border: 0;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  color: ${({ theme }) => theme.colors.surface};
-  background: ${getToneColor};
-  font-size: 1.5rem;
+  font-size: ${({ $layout }) => ($layout === 'page' ? '1.5rem' : '1.125rem')};
   font-weight: 800;
-  cursor: pointer;
-  transition:
-    box-shadow ${({ theme }) => theme.animation.fast} ease,
-    filter ${({ theme }) => theme.animation.fast} ease;
 
-  &:hover {
-    filter: brightness(0.96);
-  }
-
-  &:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 0 4px rgba(224, 58, 75, 0.22);
-  }
+  ${({ $layout }) =>
+    $layout === 'page' &&
+    css`
+      min-height: 76px;
+    `}
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     width: 100%;

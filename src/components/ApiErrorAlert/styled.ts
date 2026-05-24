@@ -135,39 +135,16 @@ export const Actions = styled.div`
   justify-content: flex-end;
   gap: ${({ theme }) => theme.spacing[3]};
 
+  > button {
+    min-width: 128px;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     grid-column: auto;
     flex-direction: column;
-  }
-`;
 
-export const Action = styled.button`
-  min-width: 128px;
-  min-height: ${({ theme }) => theme.buttonSizes.control};
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: 0;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  color: ${({ theme }) => theme.colors.surface};
-  background: ${({ theme }) => theme.colors.error};
-  font-size: ${({ theme }) => theme.typography.small.fontSize};
-  font-weight: 800;
-  cursor: pointer;
-  transition:
-    box-shadow ${({ theme }) => theme.animation.fast} ease,
-    filter ${({ theme }) => theme.animation.fast} ease;
-
-  &:hover {
-    filter: brightness(0.96);
-  }
-
-  &:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 0 4px rgba(224, 58, 75, 0.22);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: 100%;
-    min-height: ${({ theme }) => theme.buttonSizes.control};
-    font-size: ${({ theme }) => theme.typography.body.fontSize};
+    > button {
+      width: 100%;
+    }
   }
 `;

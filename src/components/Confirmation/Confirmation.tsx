@@ -46,7 +46,15 @@ export const Confirmation: React.FC<IConfirmationProps> = ({
           <S.Title $layout={layout}>{title}</S.Title>
           {description && <S.Description>{description}</S.Description>}
         </S.Copy>
-        <S.ConfirmButton type="button" $tone={tone} onClick={onConfirm} autoFocus>
+        <S.ConfirmButton
+          variant='solid'
+          tone={tone}
+          size='lg'
+          shape='pill'
+          $layout={layout}
+          autoFocus
+          onClick={onConfirm}
+        >
           {confirmLabel}
         </S.ConfirmButton>
       </S.Dialog>

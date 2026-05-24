@@ -2,6 +2,7 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
 //components
+import { Button } from '../Button';
 import { EmptyState } from '../EmptyState';
 import { FavoriteCityItem } from '../FavoriteCityItem';
 import { Modal } from '../Modal';
@@ -25,17 +26,24 @@ export const FavoritesModal: React.FC<IFavoritesModalProps> = ({
 
   const footer = (
     <>
-      <S.CloseButton type='button' onClick={onClose}>
+      <Button
+        variant='outline'
+        tone='secondary'
+        size='md'
+        onClick={onClose}
+      >
         Close
-      </S.CloseButton>
-      <S.ClearAllButton
-        type='button'
+      </Button>
+      <Button
+        variant='solid'
+        tone='danger'
+        size='md'
         aria-label='Clear all favorite cities'
         disabled={!hasFavorites}
         onClick={handlers.handleClearAll}
       >
         Clear all favorites
-      </S.ClearAllButton>
+      </Button>
     </>
   );
 

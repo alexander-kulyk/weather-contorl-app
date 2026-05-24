@@ -1,6 +1,8 @@
 //core
 import React, { useCallback, useMemo } from 'react';
 import { LoaderCircle, Search, X } from 'lucide-react';
+//components
+import { Button } from '../Button';
 //other
 import { getSearchInputDescribedBy, getSearchInputState } from './utils';
 import type { ISearchInputProps, ISearchInputState } from './types';
@@ -54,13 +56,17 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
           onChange={handleChange}
         />
         {hasValue && (
-          <S.ClearButton
-            type='button'
+          <Button
+            variant='soft'
+            tone='secondary'
+            size='sm'
+            shape='pill'
+            iconOnly
             aria-label='Clear city search'
             onClick={onClear}
           >
             <X size={16} strokeWidth={1.8} aria-hidden='true' />
-          </S.ClearButton>
+          </Button>
         )}
       </S.Field>
       {showErrorText && (

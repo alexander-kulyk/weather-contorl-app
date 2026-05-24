@@ -2,6 +2,8 @@
 import React, { useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+//components
+import { Button } from '../Button';
 //other
 import { useModalBehavior } from './hooks';
 import type { IModalProps } from './types';
@@ -63,13 +65,17 @@ export const Modal: React.FC<IModalProps> = ({
             {headerActions && <S.HeaderActions>{headerActions}</S.HeaderActions>}
           </S.TitleRow>
           {showCloseButton && (
-            <S.CloseButton
-              type='button'
+            <Button
+              variant='ghost'
+              tone='secondary'
+              size='sm'
+              shape='pill'
+              iconOnly
               aria-label='Close dialog'
               onClick={onClose}
             >
               <X size={18} strokeWidth={1.8} aria-hidden='true' />
-            </S.CloseButton>
+            </Button>
           )}
         </S.Header>
 

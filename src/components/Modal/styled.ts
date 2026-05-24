@@ -78,26 +78,6 @@ export const HeaderActions = styled.div`
   gap: ${({ theme }) => theme.spacing[2]};
 `;
 
-export const CloseButton = styled.button`
-  width: ${({ theme }) => theme.buttonSizes.iconSm};
-  height: ${({ theme }) => theme.buttonSizes.iconSm};
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  background: transparent;
-  transition:
-    color ${({ theme }) => theme.animation.fast} ease,
-    background ${({ theme }) => theme.animation.fast} ease;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.textPrimary};
-    background: ${({ theme }) => theme.colors.surfaceAlt};
-  }
-`;
-
 export const Description = styled.p`
   padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[6]} 0;
   color: ${({ theme }) => theme.colors.textSecondary};

@@ -50,26 +50,6 @@ export const Count = styled.span`
   font-weight: 700;
 `;
 
-export const ClearAllButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[2]};
-  border: 0;
-  border-radius: ${({ theme }) => theme.radius.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  background: transparent;
-  font-size: ${({ theme }) => theme.typography.small.fontSize};
-  font-weight: 500;
-  transition:
-    color ${({ theme }) => theme.animation.fast} ease,
-    background ${({ theme }) => theme.animation.fast} ease;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.textPrimary};
-    background: ${({ theme }) => theme.colors.surfaceAlt};
-  }
-`;
-
 export const List = styled.div<IFavoriteListProps>`
   display: grid;
   gap: ${({ theme }) => theme.spacing[3]};

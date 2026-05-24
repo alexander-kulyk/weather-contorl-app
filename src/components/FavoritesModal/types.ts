@@ -6,7 +6,3 @@ export interface IFavoritesModalProps {
   onClose: () => void;
   onSelect: (favorite: IFavoriteCity) => void;
 }
-
-export interface IClearAllButtonProps {
-  disabled?: boolean;
-}

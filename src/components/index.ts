@@ -1,6 +1,7 @@
 export * from './ApiErrorAlert';
 export * from './AppHeader';
 export * from './AppProviders';
+export * from './Button';
 export * from './Confirmation';
 export * from './EmptyState';
 export * from './ErrorBoundary';

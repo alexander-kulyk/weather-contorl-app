@@ -2,6 +2,8 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
+//components
+import { Button } from '../Button';
 //other
 import { useApiErrorContext } from '../../context';
 import { getApiErrorDetails } from './utils';
@@ -57,9 +59,15 @@ export const ApiErrorAlert: React.FC<IApiErrorAlertProps> = ({
             </S.Copy>
           </S.Content>
           <S.Actions>
-            <S.Action type='button' onClick={handleConfirm}>
+            <Button
+              variant='solid'
+              tone='danger'
+              size='md'
+              shape='pill'
+              onClick={handleConfirm}
+            >
               Confirm
-            </S.Action>
+            </Button>
           </S.Actions>
         </S.Alert>
       ),
