@@ -1,10 +1,9 @@
 //core
 import React, { useEffect } from 'react';
 //other
+import { checkIsModalRole, getConfirmationAriaLabel } from './utils';
 import type { IConfirmationProps } from './types';
 import * as S from './styled';
-
-const DEFAULT_ARIA_LABEL = 'Confirmation';
 
 export const Confirmation: React.FC<IConfirmationProps> = ({
   title,
@@ -17,9 +16,8 @@ export const Confirmation: React.FC<IConfirmationProps> = ({
   ariaLabel,
   onConfirm,
 }) => {
-  const resolvedAriaLabel =
-    ariaLabel ?? (typeof title === 'string' ? title : DEFAULT_ARIA_LABEL);
-  const isModalRole = role === 'dialog' || role === 'alertdialog';
+  const resolvedAriaLabel = getConfirmationAriaLabel(title, ariaLabel);
+  const isModalRole = checkIsModalRole(role);
 
   useEffect((): (() => void) | undefined => {
     if (typeof document === 'undefined') {

@@ -8,3 +8,10 @@ export interface ISearchInputProps {
   onClear: () => void;
   disabled?: boolean;
 }
+
+export interface ISearchInputState {
+  hasError: boolean;
+  showErrorText: boolean;
+  isLoading: boolean;
+  hasValue: boolean;
+}

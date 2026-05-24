@@ -8,3 +8,11 @@ export interface ISearchResultRowProps {
   onToggleFavorite: (weather: IWeatherResponse) => void;
   disabled?: boolean;
 }
+
+export interface ISearchResultRowViewModel {
+  temperature: string;
+  wind: string;
+  humidity: string;
+  rowLabel: string;
+  cityMeta: string;
+}

@@ -1,5 +1,5 @@
 //core
-import React from 'react';
+import React, { useMemo } from 'react';
 import { AlertTriangle, Search } from 'lucide-react';
 //components
 import { EmptyState } from '../EmptyState';
@@ -7,7 +7,9 @@ import { ErrorMessage } from '../ErrorMessage';
 import { LoadingSkeleton } from '../LoadingSkeleton';
 import { SearchResultRow } from '../SearchResultRow';
 //other
+import { getSearchResultsListState } from './utils';
 import type { ISearchResultsListProps } from './types';
+import type { ISearchResultsListState } from './types';
 import type { IWeatherResponse } from '../../types';
 import * as S from './styled';
 
@@ -23,10 +25,11 @@ export const SearchResultsList: React.FC<ISearchResultsListProps> = ({
   status,
   error,
 }) => {
-  const hasResults = results.length > 0;
-  const hasNoResults = hasSearchStarted && status === 'success' && !hasResults;
-  const showInitialEmpty = !hasSearchStarted && status !== 'loading';
-  const resultCount = results.length;
+  const state = useMemo<ISearchResultsListState>(
+    () => getSearchResultsListState(results.length, hasSearchStarted, status),
+    [hasSearchStarted, results.length, status],
+  );
+  const { hasNoResults, hasResults, resultCount, showInitialEmpty } = state;
 
   return (
     <S.Section aria-labelledby='search-results-title'>

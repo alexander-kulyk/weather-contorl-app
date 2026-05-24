@@ -10,3 +10,10 @@ export interface ISearchResultsListProps {
   onSelect: (weather: IWeatherResponse) => void;
   onToggleFavorite: (weather: IWeatherResponse) => void;
 }
+
+export interface ISearchResultsListState {
+  hasResults: boolean;
+  hasNoResults: boolean;
+  showInitialEmpty: boolean;
+  resultCount: number;
+}

@@ -14,7 +14,14 @@ import {
 import { EmptyState } from '../EmptyState';
 //other
 import { formatTemperature } from '../../utils';
-import { getChartSummary, getVisibleHours, mapHoursToChartPoints } from './utils';
+import {
+  formatTemperatureTick,
+  getChartMargin,
+  getChartSummary,
+  getTooltipStyle,
+  getVisibleHours,
+  mapHoursToChartPoints,
+} from './utils';
 import type { IHourlyChartPoint, IHourlyForecastChartProps } from './types';
 import * as S from './styled';
 
@@ -37,25 +44,18 @@ export const HourlyForecastChart: React.FC<IHourlyForecastChartProps> = ({
     [chartData],
   );
   const chartMargin = useMemo(
-    () => ({ top: 8, right: 12, bottom: 0, left: -18 }),
+    () => getChartMargin(),
     [],
   );
   const tooltipStyle = useMemo<React.CSSProperties>(
-    () => ({
-      border: `1px solid ${theme.colors.border}`,
-      borderRadius: theme.radius.sm,
-      boxShadow: theme.shadows.sm,
-    }),
-    [theme.colors.border, theme.radius.sm, theme.shadows.sm],
+    () => getTooltipStyle(theme),
+    [theme],
   );
 
-  const formatTick = useCallback((value: string | number): string => {
-    const numericValue = Number(value);
-
-    return Number.isFinite(numericValue)
-      ? formatTemperature(numericValue)
-      : String(value);
-  }, []);
+  const formatTick = useCallback(
+    (value: string | number): string => formatTemperatureTick(value),
+    [],
+  );
 
   if (chartData.length === 0) {
     return <EmptyState title='Hourly forecast data is not available.' />;

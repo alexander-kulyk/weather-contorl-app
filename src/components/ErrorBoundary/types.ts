@@ -22,3 +22,10 @@ export interface IErrorBoundaryState {
   hasError: boolean;
   isDismissed: boolean;
 }
+
+export interface IErrorBoundaryFallbackConfig {
+  title: ReactNode;
+  confirmLabel: string;
+  layout: ConfirmationLayout;
+  icon: ReactNode;
+}

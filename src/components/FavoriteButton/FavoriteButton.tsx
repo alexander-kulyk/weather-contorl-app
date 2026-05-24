@@ -2,6 +2,7 @@
 import React, { useCallback } from 'react';
 import { Heart } from 'lucide-react';
 //other
+import { getFavoriteButtonLabel } from './utils';
 import type { IFavoriteButtonProps } from './types';
 import * as S from './styled';
 
@@ -12,9 +13,7 @@ export const FavoriteButton: React.FC<IFavoriteButtonProps> = ({
   disabled = false,
   variant = 'plain',
 }) => {
-  const accessibleLabel = isFavorite
-    ? `Remove ${cityName} from favorites`
-    : `Add ${cityName} to favorites`;
+  const accessibleLabel = getFavoriteButtonLabel(cityName, isFavorite);
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>): void => {

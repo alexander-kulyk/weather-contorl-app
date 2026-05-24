@@ -1,8 +1,9 @@
 //core
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 //other
 import type { ForecastRange } from '../../types';
-import type { IForecastSwitcherProps } from './types';
+import { getForecastSwitcherState } from './utils';
+import type { IForecastSwitcherProps, IForecastSwitcherState } from './types';
 import * as S from './styled';
 
 export const ForecastSwitcher: React.FC<IForecastSwitcherProps> = ({ value, onChange }) => {
@@ -14,8 +15,11 @@ export const ForecastSwitcher: React.FC<IForecastSwitcherProps> = ({ value, onCh
     onChange(15);
   }, [onChange]);
 
-  const isSevenActive = value === 7;
-  const isFifteenActive = value === 15;
+  const state = useMemo<IForecastSwitcherState>(
+    () => getForecastSwitcherState(value),
+    [value],
+  );
+  const { isFifteenActive, isSevenActive } = state;
 
   return (
     <S.Switcher role="group" aria-label="Forecast range">

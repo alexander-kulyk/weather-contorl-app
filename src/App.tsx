@@ -18,14 +18,14 @@ export const App: React.FC = () => {
 
   return (
     <S.Shell>
-      <title>Aeris Weather Dashboard</title>
-      <ErrorBoundary component="AppHeader">
+      <title>Weather Dashboard</title>
+      <ErrorBoundary component='AppHeader'>
         <AppHeader favoriteCount={values.favorites.values.favorites.length} />
       </ErrorBoundary>
 
       <S.Workspace>
         <S.Sidebar>
-          <ErrorBoundary component="SearchInput">
+          <ErrorBoundary component='SearchInput'>
             <SearchInput
               value={values.weather.values.searchQuery}
               status={values.weather.values.searchStatus}
@@ -34,7 +34,7 @@ export const App: React.FC = () => {
               onClear={values.weather.handlers.clearSearch}
             />
           </ErrorBoundary>
-          <ErrorBoundary component="SearchResultsList">
+          <ErrorBoundary component='SearchResultsList'>
             <SearchResultsList
               results={values.weather.values.searchResults}
               status={values.weather.values.searchStatus}
@@ -46,7 +46,7 @@ export const App: React.FC = () => {
               onToggleFavorite={handlers.handleWeatherFavoriteToggle}
             />
           </ErrorBoundary>
-          <ErrorBoundary component="FavoriteCitiesSection">
+          <ErrorBoundary component='FavoriteCitiesSection'>
             <FavoriteCitiesSection
               favorites={values.favorites.values.favorites}
               selectedWeatherId={values.selectedWeatherId}
@@ -57,7 +57,7 @@ export const App: React.FC = () => {
         </S.Sidebar>
 
         <S.Details>
-          <ErrorBoundary component="WeatherDetailsCard">
+          <ErrorBoundary component='WeatherDetailsCard'>
             <WeatherDetailsCard
               weather={values.weather.values.selectedWeather}
               status={values.weather.values.detailStatus}

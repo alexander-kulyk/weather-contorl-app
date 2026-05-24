@@ -4,17 +4,14 @@ import React, { useMemo } from 'react';
 import { EmptyState } from '../EmptyState';
 import { ForecastDayItem } from '../ForecastDayItem';
 //other
-import type { IForecastListProps } from './types';
+import { getForecastTemperatureDomain } from './utils';
+import type { IForecastListProps, IForecastTemperatureDomain } from './types';
 import type { IWeatherDay } from '../../types';
 import * as S from './styled';
 
 export const ForecastList: React.FC<IForecastListProps> = ({ days, themeKey }) => {
-  const domainMin = useMemo(
-    () => Math.min(...days.map((day: IWeatherDay) => day.temperatureMin)),
-    [days],
-  );
-  const domainMax = useMemo(
-    () => Math.max(...days.map((day: IWeatherDay) => day.temperatureMax)),
+  const domain = useMemo<IForecastTemperatureDomain>(
+    () => getForecastTemperatureDomain(days),
     [days],
   );
   const hasDays = days.length > 0;
@@ -29,8 +26,8 @@ export const ForecastList: React.FC<IForecastListProps> = ({ days, themeKey }) =
         <ForecastDayItem
           key={day.datetime}
           day={day}
-          domainMin={domainMin}
-          domainMax={domainMax}
+          domainMin={domain.min}
+          domainMax={domain.max}
           themeKey={themeKey}
         />
       ))}

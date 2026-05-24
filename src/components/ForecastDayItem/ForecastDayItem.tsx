@@ -1,13 +1,9 @@
 //core
 import React, { useMemo } from 'react';
 //other
-import {
-  formatPrecipitation,
-  formatTemperature,
-  getTemperatureRangePosition,
-  getWeatherIcon,
-} from '../../utils';
-import type { IForecastDayItemProps } from './types';
+import { getWeatherIcon } from '../../utils';
+import { buildViewModel } from './utils';
+import type { IForecastDayItemProps, IForecastDayItemViewModel } from './types';
 import * as S from './styled';
 
 export const ForecastDayItem: React.FC<IForecastDayItemProps> = ({
@@ -16,19 +12,10 @@ export const ForecastDayItem: React.FC<IForecastDayItemProps> = ({
   domainMax,
   themeKey,
 }) => {
-  const rangePosition = useMemo(
-    () =>
-      getTemperatureRangePosition(
-        day.temperatureMin,
-        day.temperatureMax,
-        domainMin,
-        domainMax,
-      ),
-    [day.temperatureMax, day.temperatureMin, domainMax, domainMin],
+  const viewModel = useMemo<IForecastDayItemViewModel>(
+    () => buildViewModel(day, domainMin, domainMax),
+    [day, domainMax, domainMin],
   );
-  const precipitation = formatPrecipitation(day.precipitationProbability);
-  const lowTemperature = formatTemperature(day.temperatureMin);
-  const highTemperature = formatTemperature(day.temperatureMax);
 
   return (
     <S.Item $themeKey={themeKey}>
@@ -38,12 +25,17 @@ export const ForecastDayItem: React.FC<IForecastDayItemProps> = ({
         {getWeatherIcon(day.conditions, 20)}
         <S.ConditionText $themeKey={themeKey}>{day.conditions}</S.ConditionText>
       </S.Condition>
-      <S.Precipitation $themeKey={themeKey}>{precipitation}</S.Precipitation>
+      <S.Precipitation $themeKey={themeKey}>
+        {viewModel.precipitation}
+      </S.Precipitation>
       <S.Range aria-hidden="true">
-        <S.RangeFill $left={rangePosition.left} $width={rangePosition.width} />
+        <S.RangeFill
+          $left={viewModel.rangePosition.left}
+          $width={viewModel.rangePosition.width}
+        />
       </S.Range>
       <S.Temperature>
-        {lowTemperature} / {highTemperature}
+        {viewModel.lowTemperature} / {viewModel.highTemperature}
       </S.Temperature>
     </S.Item>
   );

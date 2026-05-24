@@ -5,3 +5,9 @@ export interface ISunriseSunsetCardProps {
   day: IWeatherDay;
   themeKey: WeatherThemeKey;
 }
+
+export interface ISunriseSunsetViewModel {
+  sunrise: string;
+  sunset: string;
+  dayLength: string;
+}

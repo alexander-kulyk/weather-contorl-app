@@ -1,13 +1,12 @@
 //core
 import React from 'react';
-import { Search } from 'lucide-react';
 //other
+import { getEmptyStateIcon } from './utils';
 import type { IEmptyStateProps } from './types';
 import * as S from './styled';
 
 export const EmptyState: React.FC<IEmptyStateProps> = ({ title, description, icon }) => {
-  const fallbackIcon = <Search size={22} strokeWidth={1.5} aria-hidden="true" />;
-  const renderedIcon = icon ?? fallbackIcon;
+  const renderedIcon = getEmptyStateIcon(icon);
 
   return (
     <S.Wrapper>

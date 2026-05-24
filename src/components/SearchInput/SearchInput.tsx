@@ -1,8 +1,9 @@
 //core
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { LoaderCircle, Search, X } from 'lucide-react';
 //other
-import type { ISearchInputProps } from './types';
+import { getSearchInputDescribedBy, getSearchInputState } from './utils';
+import type { ISearchInputProps, ISearchInputState } from './types';
 import * as S from './styled';
 
 const SEARCH_INPUT_ID = 'city-search';
@@ -16,12 +17,12 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
   onClear,
   disabled = false,
 }) => {
-  const hasError =
-    Boolean(error) && (status === 'error' || error?.code === 'NO_RESULTS');
-  const showErrorText = hasError && error?.code !== 'NO_RESULTS';
-  const isLoading = status === 'loading';
-  const hasValue = value.length > 0;
-  const describedBy = showErrorText ? SEARCH_ERROR_ID : undefined;
+  const state = useMemo<ISearchInputState>(
+    () => getSearchInputState(value, status, error),
+    [error, status, value],
+  );
+  const { hasError, hasValue, isLoading, showErrorText } = state;
+  const describedBy = getSearchInputDescribedBy(showErrorText, SEARCH_ERROR_ID);
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>): void => {

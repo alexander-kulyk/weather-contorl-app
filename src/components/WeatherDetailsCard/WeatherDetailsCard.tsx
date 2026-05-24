@@ -13,7 +13,7 @@ import { SunriseSunsetCard } from '../SunriseSunsetCard';
 import { WeatherMetricCard } from '../WeatherMetricCard';
 //other
 import { formatTemperature, getMetricIcon, getWeatherIcon } from '../../utils';
-import { buildViewModel } from './utils';
+import { buildViewModel, getForecastDays, getSelectedDay } from './utils';
 import type { IWeatherDetailsCardProps, IWeatherDetailsViewModel } from './types';
 import type { ForecastRange, IWeatherMetric } from '../../types';
 import * as S from './styled';
@@ -32,10 +32,10 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
     () => (weather ? buildViewModel(weather) : null),
     [weather],
   );
-  const selectedDay = weather?.days[0] ?? null;
+  const selectedDay = useMemo(() => getSelectedDay(weather), [weather]);
   const forecastDays = useMemo(
-    () => weather?.days.slice(0, forecastRange) ?? [],
-    [forecastRange, weather?.days],
+    () => getForecastDays(weather, forecastRange),
+    [forecastRange, weather],
   );
 
   const handleFavoriteToggle = useCallback((): void => {

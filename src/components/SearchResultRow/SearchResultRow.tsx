@@ -1,10 +1,11 @@
 //core
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 //components
 import { FavoriteButton } from '../FavoriteButton';
 //other
-import { formatHumidity, formatTemperature, formatWindSpeed, getWeatherIcon } from '../../utils';
-import type { ISearchResultRowProps } from './types';
+import { getWeatherIcon } from '../../utils';
+import { buildViewModel } from './utils';
+import type { ISearchResultRowProps, ISearchResultRowViewModel } from './types';
 import * as S from './styled';
 
 export const SearchResultRow: React.FC<ISearchResultRowProps> = ({
@@ -15,10 +16,10 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = ({
   onToggleFavorite,
   disabled = false,
 }) => {
-  const temperature = formatTemperature(weather.current.temperature);
-  const wind = formatWindSpeed(weather.current.windSpeed);
-  const humidity = formatHumidity(weather.current.humidity);
-  const rowLabel = `View weather details for ${weather.city}`;
+  const viewModel = useMemo<ISearchResultRowViewModel>(
+    () => buildViewModel(weather),
+    [weather],
+  );
 
   const handleSelect = useCallback((): void => {
     if (!disabled) {
@@ -44,7 +45,7 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = ({
     <S.Row
       role="button"
       tabIndex={disabled ? -1 : 0}
-      aria-label={rowLabel}
+      aria-label={viewModel.rowLabel}
       aria-disabled={disabled}
       aria-current={isSelected ? 'true' : undefined}
       $isSelected={isSelected}
@@ -55,14 +56,14 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = ({
         <S.IconBox>{getWeatherIcon(weather.current.conditions, 20)}</S.IconBox>
         <span>
           <S.CityName>{weather.city}</S.CityName>
-          <S.CityMeta>{weather.country || weather.resolvedAddress}</S.CityMeta>
+          <S.CityMeta>{viewModel.cityMeta}</S.CityMeta>
         </span>
       </S.CityCell>
       <S.Metric>
-        <strong>{temperature}</strong>
+        <strong>{viewModel.temperature}</strong>
       </S.Metric>
-      <S.Metric>{wind}</S.Metric>
-      <S.Metric>{humidity}</S.Metric>
+      <S.Metric>{viewModel.wind}</S.Metric>
+      <S.Metric>{viewModel.humidity}</S.Metric>
       <FavoriteButton
         cityName={weather.city}
         isFavorite={isFavorite}

@@ -9,8 +9,8 @@ import type { IFavoriteCitiesSectionProps } from './types';
 import * as S from './styled';
 
 export const FavoriteCitiesSection: React.FC<IFavoriteCitiesSectionProps> = ({
-  favorites,
   selectedWeatherId,
+  favorites,
   onSelect,
   onRemove,
 }) => {

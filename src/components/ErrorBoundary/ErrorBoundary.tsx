@@ -1,15 +1,12 @@
 //core
 import { Component } from 'react';
-import { AlertTriangle } from 'lucide-react';
 import type { ErrorInfo, ReactNode } from 'react';
 //components
 import { Confirmation } from '../Confirmation';
 //other
+import { getComponentName, getFallbackConfig } from './utils';
 import type { IErrorBoundaryProps, IErrorBoundaryState } from './types';
 
-const DEFAULT_COMPONENT_NAME = 'APP';
-const DEFAULT_FALLBACK_TITLE = 'Something went wrong, contact the administrator';
-const DEFAULT_CONFIRM_LABEL = 'OK';
 const ERROR_LOGGING_FORMAT = 'WEATHER.UI.ERROR';
 
 export class ErrorBoundary extends Component<
@@ -26,7 +23,7 @@ export class ErrorBoundary extends Component<
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    const component = this.props.component ?? DEFAULT_COMPONENT_NAME;
+    const component = getComponentName(this.props.component);
 
     this.props.onError?.({
       component,
@@ -46,13 +43,8 @@ export class ErrorBoundary extends Component<
       return this.props.children;
     }
 
-    const component = this.props.component ?? DEFAULT_COMPONENT_NAME;
-    const title = this.props.fallbackTitle ?? DEFAULT_FALLBACK_TITLE;
-    const confirmLabel = this.props.fallbackConfirmLabel ?? DEFAULT_CONFIRM_LABEL;
-    const layout = this.props.fallbackLayout ?? 'page';
-    const icon = this.props.fallbackIcon ?? (
-      <AlertTriangle size={42} strokeWidth={1.7} aria-hidden="true" />
-    );
+    const component = getComponentName(this.props.component);
+    const { confirmLabel, icon, layout, title } = getFallbackConfig(this.props);
 
     return (
       <Confirmation
