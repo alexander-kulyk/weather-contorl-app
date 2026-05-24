@@ -35,6 +35,14 @@ export const saveFavoriteCities = (favorites: IFavoriteCity[]): void => {
   localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
 };
 
+export const clearStoredFavoriteCities = (): void => {
+  if (typeof localStorage === 'undefined') {
+    return;
+  }
+
+  localStorage.removeItem(FAVORITES_STORAGE_KEY);
+};
+
 export const createFavoriteCity = (weather: IWeatherResponse): IFavoriteCity => ({
   id: weather.id,
   city: weather.city,

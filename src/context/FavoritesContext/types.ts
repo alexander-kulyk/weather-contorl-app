@@ -9,10 +9,13 @@ export interface IFavoritesContext {
   values: {
     favorites: IFavoriteCity[];
     favoriteIds: string[];
+    favoritesCount: number;
   };
   handlers: {
     isFavorite: (cityId: string) => boolean;
-    toggleWeatherFavorite: (weather: IWeatherResponse) => void;
+    addFavorite: (favorite: IFavoriteCity) => void;
     removeFavorite: (cityId: string) => void;
+    clearFavorites: () => void;
+    toggleWeatherFavorite: (weather: IWeatherResponse) => void;
   };
 }

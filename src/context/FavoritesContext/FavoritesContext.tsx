@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { FC } from 'react';
 //other
 import {
+  clearStoredFavoriteCities,
   createFavoriteCity,
   loadFavoriteCities,
   saveFavoriteCities,
@@ -25,10 +26,18 @@ export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => 
     [favorites],
   );
 
+  const favoritesCount = favorites.length;
+
   const isFavorite = useCallback(
     (cityId: string): boolean => favoriteIds.includes(cityId),
     [favoriteIds],
   );
+
+  const addFavorite = useCallback((favorite: IFavoriteCity): void => {
+    setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] =>
+      upsertFavoriteCity(currentFavorites, favorite),
+    );
+  }, []);
 
   const removeFavorite = useCallback((cityId: string): void => {
     setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] =>
@@ -36,6 +45,11 @@ export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => 
         (favorite: IFavoriteCity) => favorite.id !== cityId,
       ),
     );
+  }, []);
+
+  const clearFavorites = useCallback((): void => {
+    setFavorites([]);
+    clearStoredFavoriteCities();
   }, []);
 
   const toggleWeatherFavorite = useCallback(
@@ -62,12 +76,15 @@ export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => 
   const values = {
     favorites,
     favoriteIds,
+    favoritesCount,
   };
 
   const handlers = {
     isFavorite,
-    toggleWeatherFavorite,
+    addFavorite,
     removeFavorite,
+    clearFavorites,
+    toggleWeatherFavorite,
   };
 
   return (

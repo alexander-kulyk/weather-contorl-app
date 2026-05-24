@@ -20,7 +20,7 @@ export const App: React.FC = () => {
     <S.Shell>
       <title>Weather Dashboard</title>
       <ErrorBoundary component='AppHeader'>
-        <AppHeader favoriteCount={values.favorites.values.favorites.length} />
+        <AppHeader favoriteCount={values.favorites.values.favoritesCount} />
       </ErrorBoundary>
 
       <S.Workspace>
@@ -48,10 +48,8 @@ export const App: React.FC = () => {
           </ErrorBoundary>
           <ErrorBoundary component='FavoriteCitiesSection'>
             <FavoriteCitiesSection
-              favorites={values.favorites.values.favorites}
               selectedWeatherId={values.selectedWeatherId}
               onSelect={handlers.handleFavoriteSelect}
-              onRemove={values.favorites.handlers.removeFavorite}
             />
           </ErrorBoundary>
         </S.Sidebar>

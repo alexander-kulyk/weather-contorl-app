@@ -1,8 +1,5 @@
 import styled, { css } from 'styled-components';
-
-interface IFavoriteRowProps {
-  $isSelected: boolean;
-}
+import type { IFavoriteListProps } from './types';
 
 export const Section = styled.section`
   display: grid;
@@ -12,8 +9,20 @@ export const Section = styled.section`
 export const Header = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[2]};
   color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+export const HeaderLead = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
+export const HeartIcon = styled.span`
+  display: inline-flex;
+  color: ${({ theme }) => theme.colors.accent};
 `;
 
 export const Title = styled.h2`
@@ -24,6 +33,7 @@ export const Title = styled.h2`
   font-weight: ${({ theme }) => theme.typography.micro.fontWeight};
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  margin: 0;
 `;
 
 export const Count = styled.span`
@@ -32,6 +42,7 @@ export const Count = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0 ${({ theme }) => theme.spacing[2]};
   border-radius: ${({ theme }) => theme.radius.pill};
   color: ${({ theme }) => theme.colors.textSecondary};
   background: ${({ theme }) => theme.colors.surfaceAlt};
@@ -39,74 +50,87 @@ export const Count = styled.span`
   font-weight: 700;
 `;
 
-export const List = styled.div`
-  display: grid;
-  gap: ${({ theme }) => theme.spacing[3]};
+export const ClearAllButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[2]};
+  border: 0;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  background: transparent;
+  font-size: ${({ theme }) => theme.typography.small.fontSize};
+  font-weight: 500;
+  transition:
+    color ${({ theme }) => theme.animation.fast} ease,
+    background ${({ theme }) => theme.animation.fast} ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.textPrimary};
+    background: ${({ theme }) => theme.colors.surfaceAlt};
+  }
 `;
 
-export const Row = styled.div<IFavoriteRowProps>`
+export const List = styled.div<IFavoriteListProps>`
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  align-items: center;
   gap: ${({ theme }) => theme.spacing[3]};
-  padding: ${({ theme }) => theme.spacing[3]};
+
+  ${({ $isScrollable, theme }) =>
+    $isScrollable &&
+    css`
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: ${theme.spacing[2]};
+
+      scrollbar-width: thin;
+      scrollbar-color: ${theme.colors.border} transparent;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: ${theme.colors.border};
+        border-radius: ${theme.radius.pill};
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+    `}
+`;
+
+export const ViewAllButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => theme.spacing[4]};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
   background: ${({ theme }) => theme.colors.surface};
   box-shadow: ${({ theme }) => theme.shadows.xs};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-weight: 600;
+  text-align: left;
+  transition:
+    border-color ${({ theme }) => theme.animation.fast} ease,
+    background ${({ theme }) => theme.animation.fast} ease,
+    box-shadow ${({ theme }) => theme.animation.fast} ease;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.surfaceAlt};
   }
 
-  ${({ theme, $isSelected }) =>
-    $isSelected &&
-    css`
-      border-color: ${theme.colors.primary};
-      background: ${theme.colors.primarySoft};
-    `}
+  &:active {
+    box-shadow: none;
+    transform: translateY(1px);
+  }
 `;
 
-export const City = styled.div`
-  min-width: 0;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[3]};
-`;
-
-export const IconBox = styled.span`
-  width: ${({ theme }) => theme.buttonSizes.icon};
-  height: ${({ theme }) => theme.buttonSizes.icon};
+export const ViewAllTrail = styled.span`
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: ${({ theme }) => theme.radius.md};
-  color: ${({ theme }) => theme.colors.primary};
-  background: ${({ theme }) => theme.colors.primarySoft};
-`;
-
-export const Name = styled.span`
-  display: block;
-  overflow: hidden;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const Meta = styled.span`
-  display: block;
-  overflow: hidden;
+  gap: ${({ theme }) => theme.spacing[3]};
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.typography.small.fontSize};
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const Temperature = styled.span`
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: ${({ theme }) => theme.typography.cardTitle.fontSize};
-  font-weight: 800;
-  white-space: nowrap;
 `;
