@@ -22,7 +22,11 @@ export const ForecastSwitcher: React.FC<IForecastSwitcherProps> = ({ value, onCh
   const { isFifteenActive, isSevenActive } = state;
 
   return (
-    <S.Switcher role="group" aria-label="Forecast range">
+    <S.Switcher
+      role="group"
+      aria-label="Forecast range"
+      $activeIndex={isFifteenActive ? 1 : 0}
+    >
       <S.Button
         type="button"
         aria-pressed={isSevenActive}
