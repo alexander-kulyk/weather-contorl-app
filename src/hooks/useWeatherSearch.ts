@@ -5,6 +5,12 @@ import type { AsyncStatus, IAppError, IWeatherResponse } from '../types';
 import { useDebounce } from './useDebounce';
 
 const LOCATION_NOT_FOUND_MESSAGE = 'No valid locations could be determined';
+const ADDRESS_TOO_SHORT_MESSAGE =
+  'Address is too short to be uniquely identified';
+const SUPPRESSED_NO_RESULTS_MESSAGES = [
+  LOCATION_NOT_FOUND_MESSAGE,
+  ADDRESS_TOO_SHORT_MESSAGE,
+] as const;
 
 interface IUseWeatherSearchParams {
   query: string;
@@ -31,16 +37,18 @@ interface IUseWeatherSearchReturn {
 }
 
 export const useWeatherSearch = ({
-  query,
   delayMs = 400,
   minLength = 4,
   onApiError,
+  query,
 }: IUseWeatherSearchParams): IUseWeatherSearchReturn => {
-  const normalizedQuery = query.trim();
-  const debouncedQuery = useDebounce<string>(normalizedQuery, delayMs);
   const [results, setResults] = useState<IWeatherResponse[]>([]);
   const [status, setStatus] = useState<AsyncStatus>('idle');
   const [error, setError] = useState<IAppError | null>(null);
+
+  const abortController = new AbortController();
+  const normalizedQuery = query.trim();
+  const debouncedQuery = useDebounce<string>(normalizedQuery, delayMs);
   const hasQueryableInput = normalizedQuery.length >= minLength;
   const hasSearchStarted =
     hasQueryableInput && debouncedQuery.length >= minLength;
@@ -55,8 +63,6 @@ export const useWeatherSearch = ({
     if (debouncedQuery.length < minLength) {
       return;
     }
-
-    const abortController = new AbortController();
 
     queueMicrotask((): void => {
       if (abortController.signal.aborted) {
@@ -140,8 +146,10 @@ const toAppError = (error: unknown): IAppError => {
 };
 
 const shouldReportApiError = (error: unknown): error is IApiError =>
-  isApiError(error) && !isLocationNotFoundError(error);
+  isApiError(error) && !isSuppressedNoResultsError(error);
 
-const isLocationNotFoundError = (error: IApiError): boolean =>
+const isSuppressedNoResultsError = (error: IApiError): boolean =>
   error.code === 'NO_RESULTS' &&
-  Boolean(error.details?.includes(LOCATION_NOT_FOUND_MESSAGE));
+  SUPPRESSED_NO_RESULTS_MESSAGES.some((message: string): boolean =>
+    Boolean(error.details?.includes(message)),
+  );
