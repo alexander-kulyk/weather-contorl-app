@@ -2,7 +2,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { MapPin } from 'lucide-react';
 //components
-import { EmptyState } from '../EmptyState';
 import { ErrorMessage } from '../ErrorMessage';
 import { FavoriteButton } from '../Favorites';
 import { ForecastList } from '../ForecastList';
@@ -10,6 +9,7 @@ import { ForecastSwitcher } from '../ForecastSwitcher';
 import { HourlyForecastChart } from '../HourlyForecastChart';
 import { LoadingSkeleton } from '../LoadingSkeleton';
 import { SunriseSunsetCard } from '../SunriseSunsetCard';
+import { WeatherDetailsStub } from '../WeatherDetailsStub';
 import { WeatherMetricCard } from '../WeatherMetricCard';
 //other
 import { formatTemperature, getMetricIcon, getWeatherIcon } from '../../utils';
@@ -63,9 +63,7 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
   }
 
   if (!weather || !viewModel) {
-    return (
-      <EmptyState title='Select a city from the list to view detailed weather.' />
-    );
+    return <WeatherDetailsStub />;
   }
 
   return (

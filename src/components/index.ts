@@ -18,4 +18,5 @@ export * from './SearchResultRow';
 export * from './SearchResultsList';
 export * from './SunriseSunsetCard';
 export * from './WeatherDetailsCard';
+export * from './WeatherDetailsStub';
 export * from './WeatherMetricCard';

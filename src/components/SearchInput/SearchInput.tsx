@@ -4,12 +4,10 @@ import { LoaderCircle, Search, X } from 'lucide-react';
 //components
 import { Button } from '../Button';
 //other
+import { SEARCH_ERROR_ID, SEARCH_INPUT_ID } from './constants';
 import { getSearchInputDescribedBy, getSearchInputState } from './utils';
 import type { ISearchInputProps, ISearchInputState } from './types';
 import * as S from './styled';
-
-const SEARCH_INPUT_ID = 'city-search';
-const SEARCH_ERROR_ID = 'city-search-error';
 
 export const SearchInput: React.FC<ISearchInputProps> = ({
   value,
