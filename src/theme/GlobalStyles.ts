@@ -53,9 +53,13 @@ export const GlobalStyles = createGlobalStyle`
     color: inherit;
   }
 
+  :root {
+    --focus-ring: ${({ theme }) => theme.focus.ring};
+  }
+
   :focus-visible {
     outline: none;
-    box-shadow: ${({ theme }) => theme.focus.ring};
+    box-shadow: var(--focus-ring);
   }
 
   #root {

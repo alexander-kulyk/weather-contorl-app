@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
-export const List = styled.div`
+export const List = styled.ul`
   display: grid;
   gap: ${({ theme }) => theme.spacing[3]};
+  margin: 0;
+  padding: 0;
+  list-style: none;
 `;
 
 export const HeaderCount = styled.span`

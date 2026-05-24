@@ -85,6 +85,7 @@ export const theme = {
   },
   focus: {
     ring: '0 0 0 3px rgba(59, 111, 245, 0.28)',
+    ringOnDark: '0 0 0 3px rgba(255, 255, 255, 0.85)',
   },
   weatherThemes: {
     sunny: {

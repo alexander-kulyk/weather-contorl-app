@@ -23,33 +23,23 @@ export const FavoriteCityItem: React.FC<IFavoriteCityItemProps> = ({
     onRemove(favorite.id);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key !== 'Enter' && event.key !== ' ') {
-      return;
-    }
-
-    event.preventDefault();
-    onSelect(favorite);
-  };
-
   return (
-    <S.Row
-      role='button'
-      tabIndex={0}
-      aria-label={`Open weather details for ${favorite.city}`}
-      aria-current={isSelected ? 'true' : undefined}
-      $isSelected={isSelected}
-      onClick={handleSelect}
-      onKeyDown={handleKeyDown}
-    >
-      <S.City>
-        <S.IconBox>{getWeatherIcon(favorite.conditions, ICON_SIZE)}</S.IconBox>
-        <S.Body>
-          <S.Name>{favorite.city}</S.Name>
-          <S.Meta>{favorite.conditions}</S.Meta>
-        </S.Body>
-      </S.City>
-      <S.Temperature>{formatTemperature(favorite.temperature)}</S.Temperature>
+    <S.Row $isSelected={isSelected}>
+      <S.SelectButton
+        type='button'
+        aria-label={`Open weather details for ${favorite.city}`}
+        aria-current={isSelected ? 'page' : undefined}
+        onClick={handleSelect}
+      >
+        <S.City>
+          <S.IconBox>{getWeatherIcon(favorite.conditions, ICON_SIZE)}</S.IconBox>
+          <S.Body>
+            <S.Name>{favorite.city}</S.Name>
+            <S.Meta>{favorite.conditions}</S.Meta>
+          </S.Body>
+        </S.City>
+        <S.Temperature>{formatTemperature(favorite.temperature)}</S.Temperature>
+      </S.SelectButton>
       <FavoriteButton
         cityName={favorite.city}
         isFavorite

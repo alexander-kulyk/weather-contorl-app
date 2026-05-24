@@ -6,6 +6,7 @@ import type {
   IUseWeatherSearchParams,
   IUseWeatherSearchReturn,
   IUseWeatherSearchValues,
+  SearchOutcome,
 } from './types';
 import { fetchWeatherResults } from './utils';
 
@@ -31,6 +32,30 @@ export const useWeatherSearch = ({
     setError(null);
   }, []);
 
+  const applyOutcome = useCallback((outcome: SearchOutcome): void => {
+    if (outcome.kind === 'aborted') {
+      return;
+    }
+
+    if (outcome.kind === 'success') {
+      setResults(outcome.results);
+      setError(null);
+      setStatus('success');
+      return;
+    }
+
+    if (outcome.kind === 'no-results') {
+      setResults([]);
+      setError(outcome.error);
+      setStatus('success');
+      return;
+    }
+
+    setResults([]);
+    setError(outcome.error);
+    setStatus('error');
+  }, []);
+
   useEffect(() => {
     if (debouncedQuery.length < minLength) {
       return;
@@ -38,19 +63,20 @@ export const useWeatherSearch = ({
 
     const abortController = new AbortController();
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing UI to an external async resource; loading must precede the fetch
+    setStatus('loading');
+    setError(null);
+
     void fetchWeatherResults({
       onApiError,
       query: debouncedQuery,
-      setError,
-      setResults,
-      setStatus,
       signal: abortController.signal,
-    });
+    }).then(applyOutcome);
 
     return (): void => {
       abortController.abort();
     };
-  }, [debouncedQuery, minLength, onApiError]);
+  }, [applyOutcome, debouncedQuery, minLength, onApiError]);
 
   const values = useMemo<IUseWeatherSearchValues>(
     () => ({

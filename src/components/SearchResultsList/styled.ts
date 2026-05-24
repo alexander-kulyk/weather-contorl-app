@@ -33,9 +33,12 @@ export const Hint = styled.span`
   font-size: ${({ theme }) => theme.typography.small.fontSize};
 `;
 
-export const List = styled.div`
+export const List = styled.ul`
   display: grid;
   gap: ${({ theme }) => theme.spacing[3]};
+  margin: 0;
+  padding: 0;
+  list-style: none;
 `;
 
 export const ResultNotice = styled.div<IResultNoticeProps>`

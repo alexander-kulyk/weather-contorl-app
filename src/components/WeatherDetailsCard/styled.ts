@@ -15,6 +15,11 @@ export const Card = styled.article<ICardProps>`
   background: ${({ theme, $themeKey }) => theme.weatherThemes[$themeKey].gradient};
   box-shadow: ${({ theme }) => theme.shadows.lg};
 
+  --focus-ring: ${({ theme, $themeKey }) =>
+    theme.weatherThemes[$themeKey].isDark
+      ? theme.focus.ringOnDark
+      : theme.focus.ring};
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding: ${({ theme }) => theme.spacing[5]};
     gap: ${({ theme }) => theme.spacing[6]};

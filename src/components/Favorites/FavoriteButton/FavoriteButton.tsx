@@ -15,31 +15,25 @@ export const FavoriteButton: React.FC<IFavoriteButtonProps> = ({
 }) => {
   const accessibleLabel = getFavoriteButtonLabel(cityName, isFavorite);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation();
+  const handleClick = (): void => {
     onToggle();
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>): void => {
-    event.stopPropagation();
   };
 
   return (
     <S.Button
-      type="button"
+      type='button'
       aria-label={accessibleLabel}
       aria-pressed={isFavorite}
       disabled={disabled}
       $isFavorite={isFavorite}
       $variant={variant}
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
     >
       <Heart
         size={18}
         strokeWidth={1.8}
         fill={isFavorite ? 'currentColor' : 'none'}
-        aria-hidden="true"
+        aria-hidden='true'
       />
     </S.Button>
   );

@@ -1,41 +1,27 @@
-//core
-import axios from 'axios';
-//other
+import { httpClient } from './httpClient';
 import {
-  apiKeyGuard,
   handleApiError,
   isRequestCanceled,
   normalizedCityGuard,
-  processTimelineResponse,
 } from './utils';
-import type {
-  IVisualCrossingTimelineResponse,
-  IWeatherResponse,
-} from '../types';
-import { API } from './constants';
+import type { IVisualCrossingTimelineResponse } from './types';
 
-const fetchTimelineWeather = async (
+const fetchTimelineDto = async (
   city: string,
   signal?: AbortSignal,
-): Promise<IWeatherResponse> => {
-  const apiKey = apiKeyGuard(import.meta.env.VITE_VISUAL_CROSSING_API_KEY);
+): Promise<{ data: IVisualCrossingTimelineResponse; normalizedCity: string }> => {
   const normalizedCity = normalizedCityGuard(city);
 
   try {
-    const response = await axios.get<IVisualCrossingTimelineResponse>(
-      `${API.BASE_URL}/${encodeURIComponent(normalizedCity)}`,
+    const response = await httpClient.get<IVisualCrossingTimelineResponse>(
+      `/${encodeURIComponent(normalizedCity)}`,
       {
-        params: {
-          unitGroup: 'metric',
-          include: 'current,days,hours',
-          key: apiKey,
-          contentType: 'json',
-        },
+        params: { include: 'current,days,hours' },
         signal,
       },
     );
 
-    return processTimelineResponse(response.data, normalizedCity);
+    return { data: response.data, normalizedCity };
   } catch (error: unknown) {
     if (isRequestCanceled(error)) {
       throw error;
@@ -45,22 +31,6 @@ const fetchTimelineWeather = async (
   }
 };
 
-const searchByCity = async (
-  city: string,
-  signal?: AbortSignal,
-): Promise<IWeatherResponse[]> => {
-  const weather = await fetchTimelineWeather(city, signal);
-
-  return [weather];
-};
-
-const fetchWeatherByCity = async (
-  city: string,
-  signal?: AbortSignal,
-): Promise<IWeatherResponse> => fetchTimelineWeather(city, signal);
-
 export const weatherApi = {
-  fetchTimelineWeather,
-  searchByCity,
-  fetchWeatherByCity,
+  fetchTimelineDto,
 };

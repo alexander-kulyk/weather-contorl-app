@@ -1,9 +1,9 @@
-import type { IVisualCrossingTimelineResponse, IWeatherResponse } from '../../../types';
-import { getWeatherThemeKey } from '../../../utils';
-import { processCurrentConditions } from './processCurrentConditions';
-import { processDaysData } from './processDaysData';
+import type { IVisualCrossingTimelineResponse } from '../../../api';
+import type { IWeatherResponse } from '../../../types';
+import { mapCurrentConditions } from './mapCurrentConditions';
+import { mapDays } from './mapDays';
 
-export const processTimelineResponse = (
+export const mapTimelineResponse = (
   response: IVisualCrossingTimelineResponse,
   fallbackCity: string,
 ): IWeatherResponse => {
@@ -13,7 +13,6 @@ export const processTimelineResponse = (
     .split(',')
     .map((part: string) => part.trim());
   const firstDay = response.days?.[0];
-  const current = processCurrentConditions(response.currentConditions, firstDay);
   const city = addressParts[0] ?? fallbackCity;
   const country = addressParts.at(-1) ?? '';
 
@@ -25,9 +24,8 @@ export const processTimelineResponse = (
     timezone: response.timezone ?? 'Local time',
     latitude: response.latitude ?? 0,
     longitude: response.longitude ?? 0,
-    current,
-    days: processDaysData(response.days ?? []),
-    themeKey: getWeatherThemeKey(current.conditions, current.icon),
+    current: mapCurrentConditions(response.currentConditions, firstDay),
+    days: mapDays(response.days ?? []),
     updatedAt: new Date().toISOString(),
   };
 };

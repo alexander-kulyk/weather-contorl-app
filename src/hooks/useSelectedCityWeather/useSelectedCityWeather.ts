@@ -5,6 +5,7 @@ import type {
   IUseSelectedCityWeatherParams,
   IUseSelectedCityWeatherReturn,
   IUseSelectedCityWeatherValues,
+  SelectedWeatherOutcome,
 } from './types';
 import { fetchSelectedCityWeather } from './utils';
 
@@ -51,6 +52,23 @@ export const useSelectedCityWeather = ({
     selectCityByName(city);
   }, [lastRequestedCity, selectCityByName, selectedWeather]);
 
+  const applyOutcome = useCallback((outcome: SelectedWeatherOutcome): void => {
+    if (outcome.kind === 'aborted') {
+      return;
+    }
+
+    if (outcome.kind === 'success') {
+      setSelectedWeather(outcome.weather);
+      setStatus('success');
+      setError(null);
+      return;
+    }
+
+    setSelectedWeather(null);
+    setStatus('error');
+    setError(outcome.error);
+  }, []);
+
   useEffect(() => {
     if (!requestedCity) {
       return;
@@ -61,16 +79,13 @@ export const useSelectedCityWeather = ({
     void fetchSelectedCityWeather({
       city: requestedCity,
       onApiError,
-      setError,
-      setSelectedWeather,
-      setStatus,
       signal: abortController.signal,
-    });
+    }).then(applyOutcome);
 
     return (): void => {
       abortController.abort();
     };
-  }, [onApiError, requestedCity]);
+  }, [applyOutcome, onApiError, requestedCity]);
 
   const values = useMemo<IUseSelectedCityWeatherValues>(
     () => ({

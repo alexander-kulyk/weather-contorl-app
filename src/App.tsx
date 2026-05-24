@@ -20,28 +20,28 @@ export const App: React.FC = () => {
     <S.Shell>
       <title>Weather Dashboard</title>
       <ErrorBoundary component='AppHeader'>
-        <AppHeader favoriteCount={values.favorites.values.favoritesCount} />
+        <AppHeader favoriteCount={values.favoritesCount} />
       </ErrorBoundary>
 
       <S.Workspace>
         <S.Sidebar>
           <ErrorBoundary component='SearchInput'>
             <SearchInput
-              value={values.weather.values.searchQuery}
-              status={values.weather.values.searchStatus}
-              error={values.weather.values.searchError}
-              onChange={values.weather.handlers.setSearchQuery}
-              onClear={values.weather.handlers.clearSearch}
+              value={values.searchQuery}
+              status={values.searchStatus}
+              error={values.searchError}
+              onChange={handlers.setSearchQuery}
+              onClear={handlers.clearSearch}
             />
           </ErrorBoundary>
           <ErrorBoundary component='SearchResultsList'>
             <SearchResultsList
-              results={values.weather.values.searchResults}
-              status={values.weather.values.searchStatus}
-              error={values.weather.values.searchError}
-              hasSearchStarted={values.weather.values.hasSearchStarted}
+              results={values.searchResults}
+              status={values.searchStatus}
+              error={values.searchError}
+              hasSearchStarted={values.hasSearchStarted}
               selectedWeatherId={values.selectedWeatherId}
-              isFavorite={values.favorites.handlers.isFavorite}
+              isFavorite={values.isFavorite}
               onSelect={handlers.handleWeatherSelect}
               onToggleFavorite={handlers.handleWeatherFavoriteToggle}
             />
@@ -57,14 +57,12 @@ export const App: React.FC = () => {
         <S.Details>
           <ErrorBoundary component='WeatherDetailsCard'>
             <WeatherDetailsCard
-              weather={values.weather.values.selectedWeather}
-              status={values.weather.values.detailStatus}
-              error={values.weather.values.detailError}
-              forecastRange={values.weather.values.forecastRange}
+              weather={values.selectedWeather}
+              status={values.detailStatus}
+              error={values.detailError}
               isFavorite={values.selectedIsFavorite}
               onToggleFavorite={handlers.handleWeatherFavoriteToggle}
-              onForecastRangeChange={values.weather.handlers.setForecastRange}
-              onRetry={values.weather.handlers.retrySelected}
+              onRetry={handlers.retrySelected}
             />
           </ErrorBoundary>
         </S.Details>

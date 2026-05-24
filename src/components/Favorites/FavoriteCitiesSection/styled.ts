@@ -51,12 +51,13 @@ export const Count = styled.span`
   font-weight: 800;
 `;
 
-export const List = styled.div<IFavoriteListProps>`
+export const List = styled.ul<IFavoriteListProps>`
   position: relative;
   display: grid;
   gap: ${({ theme }) => theme.spacing[3]};
-  margin-top: ${({ theme }) => theme.spacing[1]};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin: ${({ theme }) => theme.spacing[1]} 0 ${({ theme }) => theme.spacing[2]};
+  padding: 0;
+  list-style: none;
 
   ${({ $isScrollable, theme }) =>
     $isScrollable &&

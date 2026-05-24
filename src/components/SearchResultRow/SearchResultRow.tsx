@@ -22,16 +22,7 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = ({
   );
 
   const handleSelect = (): void => {
-    if (!disabled) {
-      onSelect(weather);
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleSelect();
-    }
+    onSelect(weather);
   };
 
   const handleFavoriteToggle = (): void => {
@@ -39,28 +30,27 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = ({
   };
 
   return (
-    <S.Row
-      role="button"
-      tabIndex={disabled ? -1 : 0}
-      aria-label={viewModel.rowLabel}
-      aria-disabled={disabled}
-      aria-current={isSelected ? 'true' : undefined}
-      $isSelected={isSelected}
-      onClick={handleSelect}
-      onKeyDown={handleKeyDown}
-    >
-      <S.CityCell>
-        <S.IconBox>{getWeatherIcon(weather.current.conditions, 20)}</S.IconBox>
-        <span>
-          <S.CityName>{weather.city}</S.CityName>
-          <S.CityMeta>{viewModel.cityMeta}</S.CityMeta>
-        </span>
-      </S.CityCell>
-      <S.Metric>
-        <strong>{viewModel.temperature}</strong>
-      </S.Metric>
-      <S.Metric>{viewModel.wind}</S.Metric>
-      <S.Metric>{viewModel.humidity}</S.Metric>
+    <S.Row $isSelected={isSelected}>
+      <S.SelectButton
+        type='button'
+        disabled={disabled}
+        aria-label={viewModel.rowLabel}
+        aria-current={isSelected ? 'page' : undefined}
+        onClick={handleSelect}
+      >
+        <S.CityCell>
+          <S.IconBox>{getWeatherIcon(weather.current.conditions, 20)}</S.IconBox>
+          <span>
+            <S.CityName>{weather.city}</S.CityName>
+            <S.CityMeta>{viewModel.cityMeta}</S.CityMeta>
+          </span>
+        </S.CityCell>
+        <S.Metric>
+          <strong>{viewModel.temperature}</strong>
+        </S.Metric>
+        <S.Metric>{viewModel.wind}</S.Metric>
+        <S.Metric>{viewModel.humidity}</S.Metric>
+      </S.SelectButton>
       <FavoriteButton
         cityName={weather.city}
         isFavorite={isFavorite}

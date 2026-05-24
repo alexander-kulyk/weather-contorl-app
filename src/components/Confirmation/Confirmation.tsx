@@ -1,5 +1,6 @@
 //core
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 //other
 import { checkIsModalRole, getConfirmationAriaLabel } from './utils';
@@ -23,6 +24,8 @@ export const Confirmation: React.FC<IConfirmationProps> = ({
   const isModalRole = checkIsModalRole(role);
   const hasCancelAction = Boolean(onCancel);
   const actionShape = layout === 'page' ? 'pill' : 'square';
+  const autoFocusCancel = hasCancelAction;
+  const autoFocusConfirm = !hasCancelAction;
 
   useEffect((): (() => void) | undefined => {
     if (typeof document === 'undefined') {
@@ -56,7 +59,11 @@ export const Confirmation: React.FC<IConfirmationProps> = ({
     };
   }, [onCancel]);
 
-  return (
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return createPortal(
     <S.Overlay $layout={layout}>
       <S.Dialog
         $layout={layout}
@@ -94,7 +101,7 @@ export const Confirmation: React.FC<IConfirmationProps> = ({
               size='lg'
               shape={actionShape}
               $layout={layout}
-              autoFocus
+              autoFocus={autoFocusCancel}
               onClick={onCancel}
             >
               {cancelLabel}
@@ -106,13 +113,14 @@ export const Confirmation: React.FC<IConfirmationProps> = ({
             size='lg'
             shape={actionShape}
             $layout={layout}
-            autoFocus={!hasCancelAction}
+            autoFocus={autoFocusConfirm}
             onClick={onConfirm}
           >
             {confirmLabel}
           </S.ConfirmButton>
         </S.Actions>
       </S.Dialog>
-    </S.Overlay>
+    </S.Overlay>,
+    document.body,
   );
 };

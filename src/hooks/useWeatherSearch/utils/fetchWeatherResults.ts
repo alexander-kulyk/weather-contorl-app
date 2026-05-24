@@ -1,35 +1,25 @@
-import { isApiError, isRequestCanceled, weatherApi } from '../../../api';
-import type { IWeatherResponse } from '../../../types';
+import { isApiError, isRequestCanceled } from '../../../api';
+import { weatherService } from '../../../services';
 import { toAppError } from '../../../utils';
-import type { IFetchWeatherResultsParams } from '../types';
+import type { IFetchWeatherResultsParams, SearchOutcome } from '../types';
 import { shouldReportApiError } from './shouldReportApiError';
 
 export const fetchWeatherResults = async ({
   onApiError,
   query,
-  setError,
-  setResults,
-  setStatus,
   signal,
-}: IFetchWeatherResultsParams): Promise<void> => {
-  setStatus('loading');
-  setError(null);
-
+}: IFetchWeatherResultsParams): Promise<SearchOutcome> => {
   try {
-    const weatherResults: IWeatherResponse[] = await weatherApi.searchByCity(
-      query,
-      signal,
-    );
+    const weather = await weatherService.fetchByCity(query, signal);
 
     if (signal.aborted) {
-      return;
+      return { kind: 'aborted' };
     }
 
-    setResults(weatherResults);
-    setStatus('success');
+    return { kind: 'success', results: [weather] };
   } catch (requestError: unknown) {
     if (signal.aborted || isRequestCanceled(requestError)) {
-      return;
+      return { kind: 'aborted' };
     }
 
     const appError = toAppError(requestError);
@@ -39,18 +29,13 @@ export const fetchWeatherResults = async ({
         onApiError?.(requestError);
       }
 
-      setResults([]);
-      setError(appError);
-      setStatus('success');
-      return;
+      return { kind: 'no-results', error: appError };
     }
 
     if (isApiError(requestError)) {
       onApiError?.(requestError);
     }
 
-    setResults([]);
-    setError(appError);
-    setStatus('error');
+    return { kind: 'error', error: appError };
   }
 };

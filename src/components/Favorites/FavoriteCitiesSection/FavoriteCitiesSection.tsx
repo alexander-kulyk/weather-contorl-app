@@ -72,7 +72,7 @@ export const FavoriteCitiesSection: React.FC<IFavoriteCitiesSectionProps> = ({
       )}
 
       {hasFavorites && (
-        <S.List role='list' $isScrollable={isScrollable}>
+        <S.List aria-label='Favorite cities' $isScrollable={isScrollable}>
           {values.favorites.map((favorite: IFavoriteCity) => (
             <FavoriteCityItem
               key={favorite.id}

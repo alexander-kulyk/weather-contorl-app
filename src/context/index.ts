@@ -1,3 +1,4 @@
 export * from './ApiErrorContext';
 export * from './FavoritesContext';
-export * from './WeatherContext';
+export * from './SelectedWeatherContext';
+export * from './WeatherSearchContext';

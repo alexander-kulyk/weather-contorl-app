@@ -5,7 +5,12 @@ import { ThemeProvider } from 'styled-components';
 import { ApiErrorAlert } from '../ApiErrorAlert';
 import { ErrorBoundary } from '../ErrorBoundary';
 //other
-import { ApiErrorProvider, FavoritesProvider, WeatherProvider } from '../../context';
+import {
+  ApiErrorProvider,
+  FavoritesProvider,
+  SelectedWeatherProvider,
+  WeatherSearchProvider,
+} from '../../context';
 import { GlobalStyles, theme } from '../../theme';
 import type { IAppProvidersProps } from './types';
 
@@ -14,11 +19,13 @@ export const AppProviders: React.FC<IAppProvidersProps> = ({ children }) => (
     <GlobalStyles />
     <ApiErrorProvider>
       <FavoritesProvider>
-        <WeatherProvider>
-          <ErrorBoundary component="APP" fallbackLayout="page">
-            {children}
-          </ErrorBoundary>
-        </WeatherProvider>
+        <SelectedWeatherProvider>
+          <WeatherSearchProvider>
+            <ErrorBoundary component="APP" fallbackLayout="page">
+              {children}
+            </ErrorBoundary>
+          </WeatherSearchProvider>
+        </SelectedWeatherProvider>
       </FavoritesProvider>
       <ApiErrorAlert />
     </ApiErrorProvider>

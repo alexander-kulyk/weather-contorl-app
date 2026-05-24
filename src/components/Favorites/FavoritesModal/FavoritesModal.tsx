@@ -67,7 +67,7 @@ export const FavoritesModal: React.FC<IFavoritesModalProps> = ({
         size='md'
       >
         {hasFavorites ? (
-          <S.List role='list'>
+          <S.List aria-label='Favorite cities'>
             {values.favorites.map((favorite: IFavoriteCity) => (
               <FavoriteCityItem
                 key={favorite.id}

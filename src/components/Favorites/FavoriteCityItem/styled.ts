@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 import type { IFavoriteCityItemRowProps } from './types';
 
-export const Row = styled.div<IFavoriteCityItemRowProps>`
+export const Row = styled.li<IFavoriteCityItemRowProps>`
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[3]};
   padding: ${({ theme }) => theme.spacing[3]};
@@ -26,6 +26,20 @@ export const Row = styled.div<IFavoriteCityItemRowProps>`
       border-color: ${theme.colors.primary};
       background: ${theme.colors.primarySoft};
     `}
+`;
+
+export const SelectButton = styled.button`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[3]};
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: inherit;
+  background: transparent;
+  text-align: left;
 `;
 
 export const City = styled.div`

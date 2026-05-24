@@ -1,5 +1,5 @@
 //core
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { MapPin } from 'lucide-react';
 //components
 import { ErrorMessage } from '../ErrorMessage';
@@ -12,25 +12,37 @@ import { SunriseSunsetCard } from '../SunriseSunsetCard';
 import { WeatherDetailsStub } from '../WeatherDetailsStub';
 import { WeatherMetricCard } from '../WeatherMetricCard';
 //other
-import { formatTemperature, getMetricIcon, getWeatherIcon } from '../../utils';
+import {
+  formatTemperature,
+  getMetricIcon,
+  getWeatherIcon,
+  getWeatherThemeKey,
+} from '../../utils';
 import { buildViewModel, getForecastDays, getSelectedDay } from './utils';
 import type {
   IWeatherDetailsCardProps,
   IWeatherDetailsViewModel,
 } from './types';
-import type { IWeatherMetric } from '../../types';
+import type { ForecastRange, IWeatherMetric } from '../../types';
 import * as S from './styled';
+
+const DEFAULT_FORECAST_RANGE: ForecastRange = 7;
 
 export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
   weather,
   status,
   error,
-  forecastRange,
   isFavorite,
   onToggleFavorite,
-  onForecastRangeChange,
   onRetry,
 }) => {
+  const [forecastRange, setForecastRange] = useState<ForecastRange>(
+    DEFAULT_FORECAST_RANGE,
+  );
+
+  const handleForecastRangeChange = useCallback((range: ForecastRange): void => {
+    setForecastRange(range);
+  }, []);
   const viewModel = useMemo<IWeatherDetailsViewModel | null>(
     () => (weather ? buildViewModel(weather) : null),
     [weather],
@@ -39,6 +51,13 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
   const forecastDays = useMemo(
     () => getForecastDays(weather, forecastRange),
     [forecastRange, weather],
+  );
+  const themeKey = useMemo(
+    () =>
+      weather
+        ? getWeatherThemeKey(weather.current.conditions, weather.current.icon)
+        : 'sunny',
+    [weather],
   );
 
   const handleFavoriteToggle = (): void => {
@@ -60,7 +79,7 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
   }
 
   return (
-    <S.Card $themeKey={weather.themeKey}>
+    <S.Card $themeKey={themeKey}>
       <S.Hero>
         <S.CityBlock>
           <S.Location>
@@ -68,7 +87,7 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
               <MapPin size={22} strokeWidth={1.7} aria-hidden='true' />
               {weather.city}
             </S.CityName>
-            <S.Address $themeKey={weather.themeKey}>
+            <S.Address $themeKey={themeKey}>
               {weather.resolvedAddress}
             </S.Address>
           </S.Location>
@@ -89,7 +108,7 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
           </S.ConditionIcon>
           <div>
             <S.ConditionText>{weather.current.conditions}</S.ConditionText>
-            <S.SoftText $themeKey={weather.themeKey}>
+            <S.SoftText $themeKey={themeKey}>
               Feels like {formatTemperature(weather.current.feelsLike)}
             </S.SoftText>
           </div>
@@ -104,14 +123,14 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
             value={metric.value}
             helper={metric.helper}
             icon={getMetricIcon(metric.id)}
-            themeKey={weather.themeKey}
+            themeKey={themeKey}
           />
         ))}
       </S.MetricsGrid>
 
       <HourlyForecastChart
         hours={selectedDay?.hours ?? []}
-        themeKey={weather.themeKey}
+        themeKey={themeKey}
       />
 
       <section aria-labelledby='forecast-title'>
@@ -119,14 +138,14 @@ export const WeatherDetailsCard: React.FC<IWeatherDetailsCardProps> = ({
           <S.SectionTitle id='forecast-title'>Forecast</S.SectionTitle>
           <ForecastSwitcher
             value={forecastRange}
-            onChange={onForecastRangeChange}
+            onChange={handleForecastRangeChange}
           />
         </S.SectionHeader>
-        <ForecastList days={forecastDays} themeKey={weather.themeKey} />
+        <ForecastList days={forecastDays} themeKey={themeKey} />
       </section>
 
       {selectedDay && (
-        <SunriseSunsetCard day={selectedDay} themeKey={weather.themeKey} />
+        <SunriseSunsetCard day={selectedDay} themeKey={themeKey} />
       )}
     </S.Card>
   );

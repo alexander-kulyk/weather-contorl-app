@@ -1,5 +1,5 @@
 //core
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { FC } from 'react';
 //other
 import {
@@ -11,7 +11,7 @@ import {
 } from '../../storage';
 import type { IFavoriteCity, IWeatherResponse } from '../../types';
 import { FavoritesContext } from './context';
-import type { IFavoritesProviderProps } from './types';
+import type { IFavoritesContext, IFavoritesProviderProps } from './types';
 
 export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => {
   const [favorites, setFavorites] =
@@ -21,35 +21,41 @@ export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => 
     saveFavoriteCities(favorites);
   }, [favorites]);
 
-  const favoriteIds = useMemo<string[]>(
-    () => favorites.map((favorite: IFavoriteCity) => favorite.id),
+  const favoriteIdSet = useMemo<Set<string>>(
+    () => new Set(favorites.map((favorite: IFavoriteCity) => favorite.id)),
     [favorites],
   );
 
-  const favoritesCount = favorites.length;
+  const favoriteIds = useMemo<string[]>(
+    () => Array.from(favoriteIdSet),
+    [favoriteIdSet],
+  );
 
-  const isFavorite = (cityId: string): boolean => favoriteIds.includes(cityId);
+  const isFavorite = useCallback(
+    (cityId: string): boolean => favoriteIdSet.has(cityId),
+    [favoriteIdSet],
+  );
 
-  const addFavorite = (favorite: IFavoriteCity): void => {
+  const addFavorite = useCallback((favorite: IFavoriteCity): void => {
     setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] =>
       upsertFavoriteCity(currentFavorites, favorite),
     );
-  };
+  }, []);
 
-  const removeFavorite = (cityId: string): void => {
+  const removeFavorite = useCallback((cityId: string): void => {
     setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] =>
       currentFavorites.filter(
         (favorite: IFavoriteCity) => favorite.id !== cityId,
       ),
     );
-  };
+  }, []);
 
-  const clearFavorites = (): void => {
+  const clearFavorites = useCallback((): void => {
     setFavorites([]);
     clearStoredFavoriteCities();
-  };
+  }, []);
 
-  const toggleWeatherFavorite = (weather: IWeatherResponse): void => {
+  const toggleWeatherFavorite = useCallback((weather: IWeatherResponse): void => {
     const favorite = createFavoriteCity(weather);
 
     setFavorites((currentFavorites: IFavoriteCity[]): IFavoriteCity[] => {
@@ -65,24 +71,41 @@ export const FavoritesProvider: FC<IFavoritesProviderProps> = ({ children }) => 
 
       return upsertFavoriteCity(currentFavorites, favorite);
     });
-  };
+  }, []);
 
-  const values = {
-    favorites,
-    favoriteIds,
-    favoritesCount,
-  };
+  const values = useMemo<IFavoritesContext['values']>(
+    () => ({
+      favorites,
+      favoriteIds,
+      favoritesCount: favorites.length,
+    }),
+    [favoriteIds, favorites],
+  );
 
-  const handlers = {
-    isFavorite,
-    addFavorite,
-    removeFavorite,
-    clearFavorites,
-    toggleWeatherFavorite,
-  };
+  const handlers = useMemo<IFavoritesContext['handlers']>(
+    () => ({
+      isFavorite,
+      addFavorite,
+      removeFavorite,
+      clearFavorites,
+      toggleWeatherFavorite,
+    }),
+    [
+      addFavorite,
+      clearFavorites,
+      isFavorite,
+      removeFavorite,
+      toggleWeatherFavorite,
+    ],
+  );
+
+  const contextValue = useMemo<IFavoritesContext>(
+    () => ({ values, handlers }),
+    [handlers, values],
+  );
 
   return (
-    <FavoritesContext.Provider value={{ values, handlers }}>
+    <FavoritesContext.Provider value={contextValue}>
       {children}
     </FavoritesContext.Provider>
   );

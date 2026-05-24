@@ -60,7 +60,7 @@ export const SearchResultsList: React.FC<ISearchResultsListProps> = ({
         </S.ResultNotice>
       )}
       {hasResults && (
-        <S.List role='list' aria-label='Weather search results'>
+        <S.List aria-label='Weather search results'>
           {results.map((weather: IWeatherResponse) => (
             <SearchResultRow
               key={weather.id}

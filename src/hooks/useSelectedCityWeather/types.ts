@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react';
 import type { IApiError } from '../../api';
 import type { AsyncStatus, IAppError, IWeatherResponse } from '../../types';
 
@@ -24,11 +23,13 @@ export interface IUseSelectedCityWeatherReturn {
   handlers: IUseSelectedCityWeatherHandlers;
 }
 
+export type SelectedWeatherOutcome =
+  | { kind: 'success'; weather: IWeatherResponse }
+  | { kind: 'error'; error: IAppError }
+  | { kind: 'aborted' };
+
 export interface IFetchSelectedCityWeatherParams {
   city: string;
   signal: AbortSignal;
-  setSelectedWeather: Dispatch<SetStateAction<IWeatherResponse | null>>;
-  setStatus: Dispatch<SetStateAction<AsyncStatus>>;
-  setError: Dispatch<SetStateAction<IAppError | null>>;
   onApiError?: (error: IApiError) => void;
 }

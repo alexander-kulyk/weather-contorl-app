@@ -4,11 +4,12 @@ interface IRowProps {
   $isSelected: boolean;
 }
 
-export const Row = styled.div<IRowProps>`
+export const Row = styled.li<IRowProps>`
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) auto auto auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing[3]};
   width: 100%;
   padding: ${({ theme }) => theme.spacing[3]};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -32,10 +33,24 @@ export const Row = styled.div<IRowProps>`
       border-color: ${theme.colors.primary};
       background: ${theme.colors.primarySoft};
     `}
+`;
 
-  &[aria-disabled='true'] {
+export const SelectButton = styled.button`
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) auto auto auto;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[4]};
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: ${({ theme }) => theme.radius.md};
+  color: inherit;
+  background: transparent;
+  text-align: left;
+
+  &:disabled {
     opacity: 0.5;
-    pointer-events: none;
+    cursor: not-allowed;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {

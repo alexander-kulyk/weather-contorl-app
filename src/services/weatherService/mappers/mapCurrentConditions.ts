@@ -1,15 +1,15 @@
 import type {
   IVisualCrossingCurrentConditions,
   IVisualCrossingDay,
-  IWeatherCurrentConditions,
-} from '../../../types';
-import { SETTINGS } from '../../settings';
+} from '../../../api';
+import type { IWeatherCurrentConditions } from '../../../types';
+import { WEATHER_DEFAULTS } from '../constants';
 
-export const processCurrentConditions = (
+export const mapCurrentConditions = (
   current: IVisualCrossingCurrentConditions | undefined,
   firstDay: IVisualCrossingDay | undefined,
 ): IWeatherCurrentConditions => ({
-  datetime: current?.datetime ?? SETTINGS.DEFAULT_TIME,
+  datetime: current?.datetime ?? WEATHER_DEFAULTS.TIME,
   temperature: current?.temp ?? firstDay?.temp ?? 0,
   feelsLike: current?.feelslike ?? current?.temp ?? firstDay?.temp ?? 0,
   humidity: current?.humidity ?? firstDay?.humidity ?? 0,
@@ -19,8 +19,8 @@ export const processCurrentConditions = (
   visibility: current?.visibility ?? 0,
   uvIndex: current?.uvindex ?? 0,
   conditions:
-    current?.conditions ?? firstDay?.conditions ?? SETTINGS.DEFAULT_CONDITION,
-  icon: current?.icon ?? firstDay?.icon ?? 'clear-day',
-  sunrise: current?.sunrise ?? firstDay?.sunrise ?? SETTINGS.DEFAULT_TIME,
-  sunset: current?.sunset ?? firstDay?.sunset ?? SETTINGS.DEFAULT_TIME,
+    current?.conditions ?? firstDay?.conditions ?? WEATHER_DEFAULTS.CONDITION,
+  icon: current?.icon ?? firstDay?.icon ?? WEATHER_DEFAULTS.ICON,
+  sunrise: current?.sunrise ?? firstDay?.sunrise ?? WEATHER_DEFAULTS.TIME,
+  sunset: current?.sunset ?? firstDay?.sunset ?? WEATHER_DEFAULTS.TIME,
 });
