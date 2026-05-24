@@ -43,7 +43,7 @@ export const SearchInput: React.FC<ISearchInputProps> = ({
         </S.IconSlot>
         <S.Input
           id={SEARCH_INPUT_ID}
-          type='search'
+          type='text'
           value={value}
           placeholder='Search city...'
           disabled={disabled}

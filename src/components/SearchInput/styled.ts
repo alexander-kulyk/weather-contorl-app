@@ -60,11 +60,26 @@ export const Field = styled.div<IFieldProps>`
 export const Input = styled.input`
   width: 100%;
   min-width: 0;
+  appearance: none;
+  box-shadow: none;
   border: 0;
   outline: 0;
   color: ${({ theme }) => theme.colors.textPrimary};
   background: transparent;
   font-size: ${({ theme }) => theme.typography.body.fontSize};
+
+  &:focus,
+  &:focus-visible {
+    outline: 0;
+    box-shadow: none;
+  }
+
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    display: none;
+  }
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.textMuted};
