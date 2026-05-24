@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Card = styled.section`
   position: relative;
+  min-width: 0;
   min-height: 100%;
   display: grid;
   align-content: start;
@@ -65,29 +66,34 @@ export const Badge = styled.span`
 `;
 
 export const Title = styled.h2`
+  min-width: 0;
   color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 2.75rem;
+  font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 800;
   line-height: 1.05;
   margin: 0;
   max-width: 540px;
+  overflow-wrap: anywhere;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: 1.875rem;
+    font-size: clamp(1.875rem, 10vw, 2.375rem);
   }
 `;
 
 export const Description = styled.p`
+  min-width: 0;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.typography.body.fontSize};
   line-height: 1.55;
   margin: 0;
   max-width: 560px;
+  overflow-wrap: anywhere;
 `;
 
 export const Preview = styled.div`
   position: relative;
   z-index: 1;
+  min-width: 0;
   display: grid;
   gap: ${({ theme }) => theme.spacing[5]};
   padding: ${({ theme }) => theme.spacing[5]};
@@ -95,9 +101,14 @@ export const Preview = styled.div`
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => theme.spacing[4]};
+  }
 `;
 
 export const PreviewHero = styled.div`
+  min-width: 0;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -105,6 +116,7 @@ export const PreviewHero = styled.div`
 `;
 
 export const PreviewLines = styled.div`
+  min-width: 0;
   display: grid;
   gap: ${({ theme }) => theme.spacing[2]};
 `;
@@ -116,7 +128,7 @@ interface ILineProps {
 
 export const Line = styled.span<ILineProps>`
   display: block;
-  width: ${({ $width }) => $width};
+  width: min(${({ $width }) => $width}, 100%);
   height: ${({ $height }) => $height ?? '14px'};
   border-radius: ${({ theme }) => theme.radius.sm};
   background: ${({ theme }) => theme.colors.surfaceAlt};
@@ -129,6 +141,7 @@ export const PreviewIcon = styled.span`
 `;
 
 export const PreviewMetrics = styled.div`
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: ${({ theme }) => theme.spacing[3]};
@@ -138,11 +151,12 @@ export const PreviewMetrics = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 `;
 
 export const MetricCard = styled.div`
+  min-width: 0;
   display: grid;
   gap: ${({ theme }) => theme.spacing[3]};
   padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[4]};
@@ -151,6 +165,7 @@ export const MetricCard = styled.div`
 `;
 
 export const MetricHead = styled.div`
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[2]};
@@ -158,14 +173,35 @@ export const MetricHead = styled.div`
 `;
 
 export const MetricLabel = styled.span`
+  min-width: 0;
   font-size: ${({ theme }) => theme.typography.micro.fontSize};
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 `;
 
 export const CtaRow = styled.div`
   position: relative;
   z-index: 1;
   display: flex;
+  min-width: 0;
+
+  > button {
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    > button {
+      width: 100%;
+      min-height: 56px;
+      padding-top: ${({ theme }) => theme.spacing[3]};
+      padding-bottom: ${({ theme }) => theme.spacing[3]};
+    }
+  }
 `;
