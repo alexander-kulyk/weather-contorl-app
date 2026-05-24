@@ -19,12 +19,10 @@ export const Row = styled.li<IRowProps>`
   box-shadow: ${({ theme }) => theme.shadows.xs};
   transition:
     border-color ${({ theme }) => theme.animation.fast} ease,
-    background ${({ theme }) => theme.animation.fast} ease,
-    transform ${({ theme }) => theme.animation.fast} ease;
+    background ${({ theme }) => theme.animation.fast} ease;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
-    transform: translateY(-1px);
   }
 
   ${({ theme, $isSelected }) =>

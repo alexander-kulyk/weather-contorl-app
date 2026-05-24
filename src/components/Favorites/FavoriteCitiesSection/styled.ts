@@ -67,15 +67,13 @@ export const List = styled.ul<IFavoriteListProps>`
       padding-right: ${theme.spacing[2]};
       mask-image: linear-gradient(
         to bottom,
-        transparent 0,
-        #000 ${theme.spacing[4]},
+        #000 0,
         #000 calc(100% - ${theme.spacing[12]}),
         transparent 100%
       );
       -webkit-mask-image: linear-gradient(
         to bottom,
-        transparent 0,
-        #000 ${theme.spacing[4]},
+        #000 0,
         #000 calc(100% - ${theme.spacing[12]}),
         transparent 100%
       );
