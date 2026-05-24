@@ -2,9 +2,10 @@
 import axios from 'axios';
 //other
 import {
-  createApiError,
+  apiKeyGuard,
   handleApiError,
   isRequestCanceled,
+  normalizedCityGuard,
   processTimelineResponse,
 } from './utils';
 import type {
@@ -17,7 +18,7 @@ export const searchWeatherByCity = async (
   city: string,
   signal?: AbortSignal,
 ): Promise<IWeatherResponse[]> => {
-  const weather = await requestTimelineWeather(city, signal);
+  const weather = await fetchTimelineWeather(city, signal);
 
   return [weather];
 };
@@ -25,28 +26,14 @@ export const searchWeatherByCity = async (
 export const getWeatherByCity = async (
   city: string,
   signal?: AbortSignal,
-): Promise<IWeatherResponse> => requestTimelineWeather(city, signal);
+): Promise<IWeatherResponse> => fetchTimelineWeather(city, signal);
 
-const requestTimelineWeather = async (
+const fetchTimelineWeather = async (
   city: string,
   signal?: AbortSignal,
 ): Promise<IWeatherResponse> => {
-  const apiKey = import.meta.env.VITE_VISUAL_CROSSING_API_KEY;
-  const normalizedCity = city.trim();
-
-  if (!apiKey) {
-    throw createApiError(
-      'MISSING_API_KEY',
-      'Missing VITE_VISUAL_CROSSING_API_KEY environment variable.',
-    );
-  }
-
-  if (!normalizedCity) {
-    throw createApiError(
-      'NO_RESULTS',
-      'No cities found. Check the spelling and try again.',
-    );
-  }
+  const apiKey = apiKeyGuard(import.meta.env.VITE_VISUAL_CROSSING_API_KEY);
+  const normalizedCity = normalizedCityGuard(city);
 
   try {
     const response = await axios.get<IVisualCrossingTimelineResponse>(
